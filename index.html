@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Шукаю дім 🐾</title>
+    <link rel="stylesheet" href="./css/style.css">
+    <style>
+        /* Додаткові стилі для крутих, компактних фільтрів */
+        .sidebar-filters {
+            background: #fff;
+            padding: 20px;
+            border-radius: 20px;
+            border: 2px solid #5d4037;
+            max-width: 300px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+        .filter-section { margin-bottom: 20px; }
+        .filter-title { 
+            font-weight: bold; 
+            color: #5d4037; 
+            margin-bottom: 12px; 
+            display: flex; 
+            align-items: center; 
+            gap: 8px;
+            font-size: 16px;
+        }
+        .filter-buttons { display: flex; flex-wrap: wrap; gap: 8px; }
+        .btn-filter {
+            padding: 8px 16px;
+            border-radius: 20px;
+            border: 1px solid #ddd;
+            background: #f8f9fa;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.3s ease;
+        }
+        .btn-filter:hover { background: #e9ecef; }
+        .btn-filter.active {
+            background: #a6c24c; 
+            color: white;
+            border-color: #a6c24c;
+            font-weight: bold;
+        }
+        .type-card {
+            width: 100%;
+            display: flex;
+            align-items: center;
+            padding: 12px;
+            margin-bottom: 10px;
+            border-radius: 12px;
+            border: 1.5px solid #a6c24c;
+            background: white;
+            cursor: pointer;
+            font-weight: bold;
+            transition: 0.3s;
+        }
+        .type-card.active { background: #eef5d8; border-width: 2.5px; }
+        
+        select.filter-select {
+            width: 100%;
+            padding: 10px;
+            border-radius: 10px;
+            border: 1px solid #ccc;
+            background: white;
+            font-family: inherit;
+        }
+        .btn-apply-filters {
+            width: 100%;
+            padding: 14px;
+            background: #5d4037;
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-weight: bold;
+            font-size: 16px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+        .btn-apply-filters:hover { background: #4e342e; }
+
+        /* Стильна, компактна капсула профілю */
+        .user-profile-box {
+            display: flex;
+            align-items: center;
+            background: #efebe9; /* Ніжний кремовий фон */
+            padding: 6px 18px;
+            border-radius: 40px; /* Скруглення як у капсули */
+            border: 2px solid #5d4037; /* Твій фірмовий коричневий */
+            box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+            transition: transform 0.2s;
+            overflow: hidden; /* Щоб не було смуги прокрутки */
+        }
+
+        .user-profile-box:hover {
+            transform: translateY(-2px); /* Легкий ефект при наведенні */
+        }
+
+        /* Кругла аватарка з першою літерою */
+        .user-avatar {
+            width: 32px;
+            height: 32px;
+            background: #5d4037;
+            color: #fff;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 12px;
+            font-weight: bold;
+            font-size: 15px;
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.2);
+        }
+
+        /* Текст привітання */
+        .user-info {
+            color: #5d4037;
+            font-size: 14px;
+            font-weight: 700;
+            white-space: nowrap;
+        }
+
+        /* Кнопка виходу */
+        .logout-btn {
+            margin-left: 15px;
+            text-decoration: none;
+            color: #d32f2f;
+            font-size: 12px;
+            font-weight: bold;
+            border-left: 1.5px solid #d7ccc8; /* Розділювач */
+            padding-left: 12px;
+            transition: 0.3s;
+        }
+
+        .logout-btn:hover {
+            color: #b71c1c;
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+
+    <header class="header">
+        <div class="logo">
+            <img src="./images/logo.jpg" alt="Шукаю дім">
+        </div>
+        <nav class="main-menu">
+            <a href="#" id="adopt-btn">Хочу забрати в родину</a>
+            <a href="#">Хочу допомогти</a>
+            <a href="#">Загублені, знайдені тваринки</a>
+            <a href="#">Створити оголошення</a>
+        </nav>
+        <div class="login">
+            <a href="#" id="login-link">Увійти</a>
+        </div>
+    </header>
+
+    <div class="page-layout">
+        <main class="content">
+            <aside id="filters-sidebar" class="sidebar-filters" style="display: none;">
+                
+                <div class="type-card active"><span>🐾 Усі тварини</span></div>
+                <div class="type-card"><span>🐶 Песики</span></div>
+                <div class="type-card"><span>🐱 Котики</span></div>
+
+                <div class="filter-section">
+                    <div class="filter-title">⚧ Стать</div>
+                    <div class="filter-buttons">
+                        <button class="btn-filter active">Усі</button>
+                        <button class="btn-filter">Хлопчики</button>
+                        <button class="btn-filter">Дівчинки</button>
+                    </div>
+                </div>
+
+                <div class="filter-section">
+                    <div class="filter-title">📅 Вік</div>
+                    <div class="filter-buttons">
+                        <button class="btn-filter active">Усі</button>
+                        <button class="btn-filter">до 1р.</button>
+                        <button class="btn-filter">1-2 р.</button>
+                        <button class="btn-filter">2-5 р.</button>
+                        <button class="btn-filter">старше 5 р.</button>
+                    </div>
+                </div>
+
+                <div class="filter-section">
+                    <div class="filter-title">⚕️ Стерилізація</div>
+                    <div class="filter-buttons">
+                        <button class="btn-filter active">Усі</button>
+                        <button class="btn-filter">Проведено</button>
+                        <button class="btn-filter">Немає</button>
+                    </div>
+                </div>
+
+                <div class="filter-section">
+                    <div class="filter-title">📍 Область</div>
+                    <select class="filter-select">
+                        <option>Усі області</option>
+                        <option>Вінницька</option><option>Волинська</option><option>Дніпропетровська</option>
+                        <option>Донецька</option><option>Житомирська</option><option>Закарпатська</option>
+                        <option>Запорізька</option><option>Івано-Франківська</option><option>Київська</option>
+                        <option>Кіровоградська</option><option>Луганська</option><option>Львівська</option>
+                        <option>Миколаївська</option><option>Одеська</option><option>Полтавська</option>
+                        <option>Рівненська</option><option>Сумська</option><option>Тернопільська</option>
+                        <option>Харківська</option><option>Херсонська</option><option>Хмельницька</option>
+                        <option>Черкаська</option><option>Чернівецька</option><option>Чернігівська</option>
+                    </select>
+                </div>
+
+                <div class="filter-section">
+                    <div class="filter-title">💉 Вакцинація</div>
+                    <select class="filter-select">
+                        <option>Усі</option>
+                        <option>Є щеплення</option>
+                        <option>Немає</option>
+                    </select>
+                </div>
+
+                <button class="btn-apply-filters">Показати тваринок</button>
+            </aside>
+        </main>
+
+        <aside class="sidebar">
+            <div class="contacts">
+                <p>📞 097 390 74 66</p>
+                <p>🕒 08:00 - 21:00</p>
+            </div>
+        </aside>
+    </div>
+
+    <div id="auth-modal" class="modal-overlay">
+        <div class="modal-content">
+            <span class="close-btn" id="close-modal">&times;</span>
+            <div class="modal-tabs">
+                <button class="tab-btn active" id="tab-login">Увійти</button>
+                <button class="tab-btn" id="tab-register">Реєстрація</button>
+            </div>
+            <form id="form-login" class="auth-form active-form">
+                <h3>З поверненням!</h3>
+                <input type="email" id="login-email" placeholder="Ваш E-mail" required>
+                <input type="password" id="login-password" placeholder="Пароль" required>
+                <button type="submit" class="btn-submit">Увійти</button>
+            </form>
+            <form id="form-register" class="auth-form">
+                <h3>Створити акаунт</h3>
+                <input type="text" id="register-name" placeholder="Ваше Ім'я" required>
+                <input type="email" id="register-email" placeholder="Ваш E-mail" required>
+                <input type="password" id="register-password" placeholder="Пароль" required>
+                <input type="password" id="register-confirm-password" placeholder="Повторіть пароль" required>
+                <button type="submit" class="btn-submit">Зареєструватися</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        const API_URL = 'https://shukayu-dim-backendi.onrender.com';
+        const modal = document.getElementById('auth-modal');
+        const loginLink = document.getElementById('login-link');
+        const closeModal = document.getElementById('close-modal');
+        const adoptBtn = document.getElementById('adopt-btn');
+        const filtersSidebar = document.getElementById('filters-sidebar');
+
+        // Відкриття модалки
+        loginLink.onclick = (e) => { e.preventDefault(); modal.style.display = 'flex'; };
+        closeModal.onclick = () => { modal.style.display = 'none'; };
+        window.onclick = (e) => { if (e.target === modal) modal.style.display = 'none'; };
+
+        // Таби
+        document.getElementById('tab-register').onclick = () => {
+            document.getElementById('tab-login').classList.remove('active');
+            document.getElementById('tab-register').classList.add('active');
+            document.getElementById('form-login').classList.remove('active-form');
+            document.getElementById('form-register').classList.add('active-form');
+        };
+        document.getElementById('tab-login').onclick = () => {
+            document.getElementById('tab-register').classList.remove('active');
+            document.getElementById('tab-login').classList.add('active');
+            document.getElementById('form-register').classList.remove('active-form');
+            document.getElementById('form-login').classList.add('active-form');
+        };
+
+        // Кнопка фільтрів
+        adoptBtn.onclick = (e) => {
+            e.preventDefault();
+            filtersSidebar.style.display = filtersSidebar.style.display === 'none' ? 'block' : 'none';
+        };
+
+        // Логіка перемикання кнопок-фільтрів
+        document.querySelectorAll('.btn-filter').forEach(btn => {
+            btn.onclick = function() {
+                this.parentElement.querySelectorAll('.btn-filter').forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+            };
+        });
+        document.querySelectorAll('.type-card').forEach(card => {
+            card.onclick = function() {
+                document.querySelectorAll('.type-card').forEach(c => c.classList.remove('active'));
+                this.classList.add('active');
+            };
+        });
+
+        // ВХІД
+        document.getElementById('form-login').onsubmit = async (e) => {
+            e.preventDefault();
+            const email = document.getElementById('login-email').value;
+            const password = document.getElementById('login-password').value;
+            try {
+                const res = await fetch(`${API_URL}/login`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email, password })
+                });
+                const data = await res.json();
+                if (res.ok) {
+                    alert('Привіт, ' + data.user.name + '!');
+                    localStorage.setItem('userName', data.user.name);
+                    location.reload();
+                } else alert(data.error);
+            } catch (err) { alert('Сервер вимкнено!'); }
+        };
+
+        // РЕЄСТРАЦІЯ
+        document.getElementById('form-register').onsubmit = async (e) => {
+            e.preventDefault();
+            const name = document.getElementById('register-name').value;
+            const email = document.getElementById('register-email').value;
+            const password = document.getElementById('register-password').value;
+            const confirm = document.getElementById('register-confirm-password').value;
+            if (password !== confirm) return alert('Паролі не збігаються!');
+            try {
+                const res = await fetch(`${API_URL}/register`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ name, email, password })
+                });
+                const data = await res.json();
+                if (res.ok) { alert('Успішно!'); location.reload(); }
+                else alert(data.error);
+            } catch (err) { alert('Сервер вимкнено!'); }
+        };
+
+        // --- КРАСИВЕ, КОМПАКТНЕ ВІДОБРАЖЕННЯ ПРОФІЛЮ ---
+        const savedName = localStorage.getItem('userName');
+        if (savedName) {
+            // Беремо першу літеру імені для аватарки
+            const firstLetter = savedName.charAt(0).toUpperCase();
+            document.querySelector('.login').innerHTML = `
+                <div class="user-profile-box">
+                    <div class="user-avatar">${firstLetter}</div>
+                    <div class="user-info">Привіт, ${savedName}! 🐾</div>
+                    <a href="#" class="logout-btn" id="logout-link">Вийти</a>
+                </div>
+            `;
+            // Логіка виходу
+            document.getElementById('logout-link').onclick = (e) => {
+                e.preventDefault();
+                localStorage.clear();
+                location.reload();
+            };
+        }
+    </script>
+</body>
+</html>

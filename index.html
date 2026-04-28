@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Шукаю дім 🐾</title>
     <link rel="stylesheet" href="./css/style.css">
+
     <style>
         /* Додаткові стилі для крутих, компактних фільтрів */
         .sidebar-filters {
@@ -83,17 +84,17 @@
         .user-profile-box {
             display: flex;
             align-items: center;
-            background: #efebe9; /* Ніжний кремовий фон */
+            background: #efebe9;
             padding: 6px 18px;
-            border-radius: 40px; /* Скруглення як у капсули */
-            border: 2px solid #5d4037; /* Твій фірмовий коричневий */
+            border-radius: 40px;
+            border: 2px solid #5d4037;
             box-shadow: 0 4px 10px rgba(0,0,0,0.08);
             transition: transform 0.2s;
-            overflow: hidden; /* Щоб не було смуги прокрутки */
+            overflow: hidden;
         }
 
         .user-profile-box:hover {
-            transform: translateY(-2px); /* Легкий ефект при наведенні */
+            transform: translateY(-2px);
         }
 
         /* Кругла аватарка з першою літерою */
@@ -127,7 +128,7 @@
             color: #d32f2f;
             font-size: 12px;
             font-weight: bold;
-            border-left: 1.5px solid #d7ccc8; /* Розділювач */
+            border-left: 1.5px solid #d7ccc8;
             padding-left: 12px;
             transition: 0.3s;
         }
@@ -148,7 +149,7 @@
             <a href="#" id="adopt-btn">Хочу забрати в родину</a>
             <a href="#">Хочу допомогти</a>
             <a href="#">Загублені, знайдені тваринки</a>
-            <a href="#">Створити оголошення</a>
+            <a href="#" id="create-ad-btn">Створити оголошення</a>
         </nav>
         <div class="login">
             <a href="#" id="login-link">Увійти</a>
@@ -259,11 +260,28 @@
         const closeModal = document.getElementById('close-modal');
         const adoptBtn = document.getElementById('adopt-btn');
         const filtersSidebar = document.getElementById('filters-sidebar');
+        const createAdBtn = document.getElementById('create-ad-btn'); // Знаходимо нашу кнопку
 
         // Відкриття модалки
-        loginLink.onclick = (e) => { e.preventDefault(); modal.style.display = 'flex'; };
+        if(loginLink) loginLink.onclick = (e) => { e.preventDefault(); modal.style.display = 'flex'; };
         closeModal.onclick = () => { modal.style.display = 'none'; };
         window.onclick = (e) => { if (e.target === modal) modal.style.display = 'none'; };
+
+        // ЛОГІКА КНОПКИ "СТВОРИТИ ОГОЛОШЕННЯ"
+        if(createAdBtn) {
+            createAdBtn.onclick = (e) => {
+                e.preventDefault();
+                const savedName = localStorage.getItem('userName');
+                
+                if (savedName) {
+                    // Якщо користувач увійшов -> переходимо на сторінку створення
+                    window.location.href = 'add-pet.html';
+                } else {
+                    // Якщо НЕ увійшов -> показуємо модалку реєстрації/входу
+                    modal.style.display = 'flex';
+                }
+            };
+        }
 
         // Таби
         document.getElementById('tab-register').onclick = () => {
@@ -314,6 +332,7 @@
                 if (res.ok) {
                     alert('Привіт, ' + data.user.name + '!');
                     localStorage.setItem('userName', data.user.name);
+                    localStorage.setItem('user', JSON.stringify(data.user)); // ВАЖЛИВО: Зберігаємо весь об'єкт користувача з його ID!
                     location.reload();
                 } else alert(data.error);
             } catch (err) { alert('Сервер вимкнено!'); }
@@ -342,7 +361,6 @@
         // --- КРАСИВЕ, КОМПАКТНЕ ВІДОБРАЖЕННЯ ПРОФІЛЮ ---
         const savedName = localStorage.getItem('userName');
         if (savedName) {
-            // Беремо першу літеру імені для аватарки
             const firstLetter = savedName.charAt(0).toUpperCase();
             document.querySelector('.login').innerHTML = `
                 <div class="user-profile-box">
@@ -351,12 +369,30 @@
                     <a href="#" class="logout-btn" id="logout-link">Вийти</a>
                 </div>
             `;
-            // Логіка виходу
             document.getElementById('logout-link').onclick = (e) => {
                 e.preventDefault();
                 localStorage.clear();
                 location.reload();
             };
+        }
+
+        // Ця функція знадобиться тобі вже на сторінці add-pet.html!
+        async function submitAd(event) {
+            event.preventDefault();
+            const user = JSON.parse(localStorage.getItem('user'));
+            
+            const adData = {
+                name: document.getElementById('petName').value,
+                type: document.getElementById('petType').value,
+                authorId: user.id, 
+                status: 'pending'  
+            };
+
+            const response = await fetch(`${API_URL}/pets`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(adData)
+            });
         }
     </script>
 </body>

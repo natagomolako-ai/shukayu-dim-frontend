@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Нове оголошення 🐾</title>
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        body { background-color: #fcf8f5; margin: 0; font-family: Arial, sans-serif; }
+        
+        /* ШАПКА */
+        .header-centered {
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 15px 5%; background:#fcf8f5; border-bottom: 2px solid #6B1C1C;
+        }
+        .header-centered .left-side { flex: 1; display: flex; justify-content: flex-start; }
+        .header-centered .center-side { flex: 1; display: flex; justify-content: center; }
+        .header-centered .right-side { flex: 1; }
+        
+        .back-btn {
+            background: #fff; color: #6B1C1C; border: 2px solid #6B1C1C;
+            padding: 10px 20px; border-radius: 20px; text-decoration: none; font-weight: bold; transition: 0.3s;
+        }
+        .back-btn:hover { background: #6B1C1C; color: #fff; }
+
+        /* РОЗШИРЕНИЙ КОНТЕЙНЕР ДЛЯ 3-Х КОЛОНОК */
+        .form-container {
+            max-width: 1050px; /* Зробили ширшим */
+            margin: 40px auto;
+            background: #fff;
+            padding: 40px;
+            border-radius: 25px;
+            border: 2px solid #6B1C1C;
+            box-shadow: 0 10px 25px rgba(107, 28, 28, 0.1);
+        }
+
+        .form-title { text-align: center; color: #6B1C1C; font-size: 32px; margin-bottom: 30px; font-weight: bold; }
+
+        /* НОВА СІТКА НА 3 КОЛОНКИ */
+        .form-grid { 
+            display: grid; 
+            grid-template-columns: repeat(3, 1fr); /* 3 рівні колонки */
+            gap: 20px; 
+            margin-bottom: 25px; 
+        }
+
+        .input-group { display: flex; flex-direction: column; }
+        .input-group label { font-weight: bold; color: #5d4037; margin-bottom: 8px; font-size: 14px; }
+        .input-group input, .input-group select, .input-group textarea {
+            width: 100%; padding: 12px 15px; border: 1px solid #ccc; border-radius: 12px;
+            font-size: 15px; font-family: inherit; box-sizing: border-box; transition: 0.3s;
+        }
+        .input-group input:focus, .input-group select:focus, .input-group textarea:focus {
+            outline: none; border-color: #6B1C1C; box-shadow: 0 0 5px rgba(107, 28, 28, 0.2);
+        }
+
+        /* ФОТО БЛОК (Справа знизу) */
+        .photo-upload {
+            border: 2px dashed #6B1C1C; padding: 20px; text-align: center; border-radius: 15px;
+            cursor: pointer; color: #6B1C1C; background: #faf5f5; transition: 0.3s;
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            height: 100%; /* Щоб був такої ж висоти, як опис */
+        }
+        .photo-upload:hover { background: #f2e9e9; }
+
+        .submit-ad-btn {
+            width: 100%; background: #6B1C1C; color: white; border: none; padding: 18px;
+            font-size: 18px; font-weight: bold; border-radius: 15px; cursor: pointer; transition: 0.3s;
+        }
+        .submit-ad-btn:hover { background: #4a1313; transform: translateY(-2px); }
+    </style>
+</head>
+<body>
+
+    <header class="header-centered">
+        <div class="left-side">
+            <a href="index.html" class="back-btn">← На головну</a>
+        </div>
+        <div class="center-side">
+            <img src="images/logo.jpg" alt="Шукаю дім" style="height: 100px; border-radius: 10px;">
+        </div>
+        <div class="right-side"></div>
+    </header>
+
+    <main>
+        <div class="form-container">
+            <div class="form-title">Анкета тваринки 🐾</div>
+            
+            <form id="addPetForm">
+                <div class="form-grid">
+                    
+                    <div class="input-group">
+                        <label>Ім'я (якщо є)</label>
+                        <input type="text" id="petName" placeholder="Наприклад: Барсік" required>
+                    </div>
+                    <div class="input-group">
+                        <label>Хто це?</label>
+                        <select id="petType">
+                            <option value="Песик">🐶 Песик</option>
+                            <option value="Котик">🐱 Котик</option>
+                            <option value="Інше">🦜 Інше (Папуга, кролик...)</option>
+                        </select>
+                    </div>
+                    <div class="input-group">
+                        <label>⚧ Стать</label>
+                        <select id="petGender">
+                            <option value="Хлопчик">Хлопчик</option>
+                            <option value="Дівчинка">Дівчинка</option>
+                        </select>
+                    </div>
+
+                    <div class="input-group">
+                        <label>📅 Вік</label>
+                        <select id="petAge">
+                            <option value="до 1р.">до 1р.</option>
+                            <option value="1-2 р.">1-2 р.</option>
+                            <option value="2-5 р.">2-5 р.</option>
+                            <option value="старше 5 р.">старше 5 р.</option>
+                            <option value="Невідомо">Невідомо</option>
+                        </select>
+                    </div>
+                    <div class="input-group">
+                        <label>⚕️ Стерилізація</label>
+                        <select id="petSterilization">
+                            <option value="Проведено">Проведено</option>
+                            <option value="Немає">Немає</option>
+                            <option value="Невідомо">Невідомо</option>
+                        </select>
+                    </div>
+                    <div class="input-group">
+                        <label>💉 Вакцинація</label>
+                        <select id="petVaccination">
+                            <option value="Є щеплення">Є щеплення</option>
+                            <option value="Немає">Немає</option>
+                            <option value="Невідомо">Невідомо</option>
+                        </select>
+                    </div>
+
+                    <div class="input-group">
+                        <label>📍 Область</label>
+                        <select id="petRegion">
+                            <option>Усі області</option>
+                            <option>Вінницька</option><option>Волинська</option><option>Дніпропетровська</option>
+                            <option>Донецька</option><option>Житомирська</option><option>Закарпатська</option>
+                            <option>Запорізька</option><option>Івано-Франківська</option><option>Київська</option>
+                            <option>Кіровоградська</option><option>Луганська</option><option>Львівська</option>
+                            <option>Миколаївська</option><option>Одеська</option><option>Полтавська</option>
+                            <option>Рівненська</option><option>Сумська</option><option>Тернопільська</option>
+                            <option>Харківська</option><option>Херсонська</option><option>Хмельницька</option>
+                            <option>Черкаська</option><option>Чернівецька</option><option>Чернігівська</option>
+                            <option>АР Крим</option><option>м. Київ</option><option>м. Севастополь</option>
+                        </select>
+                    </div>
+                    <div class="input-group" style="grid-column: span 2;">
+                        <label>Місто / Село</label>
+                        <input type="text" id="petCity" placeholder="Наприклад: м. Ніжин або с. Калинівка" required>
+                    </div>
+
+                    <div class="input-group" style="grid-column: 1 / 3;">
+                        <label>📝 Опис історії або характеру</label>
+                        <textarea id="petDescription" style="height: 100%; min-height: 140px; resize: none;" placeholder="Розкажіть про звички, особливості або як тваринка потрапила до вас..."></textarea>
+                    </div>
+                    
+                    <div class="photo-upload" style="grid-column: 3 / 4; margin: 0;">
+                        <span style="font-size: 35px; margin-bottom: 10px;">📸</span>
+                        <b>Натисніть сюди</b><br>щоб додати фото<br>
+                        <span style="font-size: 13px; color: #888; margin-top: 5px;">(або перетягніть файл)</span>
+                    </div>
+
+                </div>
+
+                <button type="submit" class="submit-ad-btn">Відправити на перевірку менеджеру</button>
+            </form>
+        </div>
+    </main>
+
+    <script src="js/add-pet.js"></script>
+</body>
+</html>

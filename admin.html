@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Панель Адміністратора | Шукаю дім</title>
+    <link rel="stylesheet" href="css/style.css"> 
+    <style>
+        /* Трохи специфічних стилів саме для адмінки */
+        .admin-container {
+            max-width: 1000px;
+            margin: 40px auto;
+            padding: 20px;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+        .request-card {
+            border: 2px solid #f0f0f0;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-radius: 10px;
+            display: flex;
+            gap: 20px;
+        }
+        .request-info { flex-grow: 1; }
+        .admin-btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            margin-right: 10px;
+        }
+        .btn-approve { background: #4CAF50; color: white; }
+        .btn-reject { background: #f44336; color: white; }
+        
+        /* Стиль для кнопки На головну */
+        .back-btn {
+            display: inline-block;
+            padding: 8px 25px;
+            border: 2px solid #5C2E2E; /* Твій фірмовий колір */
+            border-radius: 25px;
+            color: #5C2E2E;
+            text-decoration: none;
+            font-weight: bold;
+            background-color: white;
+            transition: all 0.3s ease;
+        } /* <-- ОСЬ ЦЯ ДУЖКА БУЛА ПРОПУЩЕНА */
+
+        /* НОВИЙ СТИЛЬ ДЛЯ ШАПКИ АДМІНКИ */
+        .admin-header {
+            display: flex;
+            align-items: center; /* Вирівнює все по одній горизонтальній лінії */
+            justify-content: space-between;
+            padding: 40px 50px 20px 50px; /* 40px зверху, щоб не втискалося у стелю! */
+        }
+        .admin-header-side {
+            flex: 1; /* Бокові частини мають однакову ширину */
+        }
+        .admin-header-center {
+            flex: 2; /* Центр ширший, щоб заголовок стояв ідеально по центру */
+            text-align: center;
+        }
+
+        .back-btn:hover {
+            background-color: #5C2E2E;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <header class="admin-header">
+        <div class="admin-header-side">
+            <a href="index.html" class="back-btn">← На головну</a>
+        </div>
+        
+        <div class="admin-header-center">
+            <h2 style="margin: 0; color: #5C2E2E;">  Адміністратор 🐾</h2>
+        </div>
+        
+        <div class="admin-header-side" style="text-align: right;">
+        </div>
+    </header>
+
+    <div class="admin-container">
+        <h3>Нові оголошення на перевірку:</h3>
+        
+        <div id="requests-list">
+            <p>Завантаження заявок з бази даних...</p>
+        </div>
+    </div>
+
+    <script src="js/admin.js"></script>
+</body>
+</html>

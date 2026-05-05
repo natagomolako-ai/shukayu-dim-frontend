@@ -1,17 +1,14 @@
-const API_URL = 'https://shukayu-dim-backendi.onrender.com';
+document.getElementById('addPetForm').addEventListener('submit', async function(event) {
+    // 1. Зупиняємо стандартне перезавантаження сторінки
+    event.preventDefault(); 
 
-document.getElementById('addPetForm').addEventListener('submit', async (e) => {
-    e.preventDefault();
+    // 2. Міняємо текст на кнопці, щоб показати процес
+    const submitBtn = document.querySelector('.submit-ad-btn');
+    const originalBtnText = submitBtn.innerText;
+    submitBtn.innerText = "Відправляємо анкету... 🐾";
+    submitBtn.disabled = true; // Блокуємо кнопку від подвійного натискання
 
-    const user = JSON.parse(localStorage.getItem('user'));
-    
-    if (!user) {
-        alert('Помилка: Ви не увійшли в систему!');
-        window.location.href = 'index.html';
-        return;
-    }
-
-    // Збираємо ВСІ нові дані з форми
+    // 3. Збираємо всі дані з полів у форматі, який розуміє наша база
     const petData = {
         name: document.getElementById('petName').value,
         type: document.getElementById('petType').value,
@@ -22,25 +19,35 @@ document.getElementById('addPetForm').addEventListener('submit', async (e) => {
         region: document.getElementById('petRegion').value,
         city: document.getElementById('petCity').value,
         description: document.getElementById('petDescription').value,
-        
-        authorId: user.id, 
-        status: 'pending' // Статус для твоєї адмінки
+        photo: "" // Поки залишаємо пустим
     };
 
+    // 4. Адреса твого бекенду (шлях для створення оголошень)
+    const API_URL = "https://shukayu-dim-backendi.onrender.com/api/pets";
+
     try {
-        const response = await fetch(`${API_URL}/pets`, {
+        // 5. Відправляємо POST-запит на сервер
+        const response = await fetch(API_URL, {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
+            headers: {
+                'Content-Type': 'application/json'
+            },
             body: JSON.stringify(petData)
         });
 
+        // 6. Перевіряємо відповідь сервера
         if (response.ok) {
-            alert('Ура! Оголошення відправлено менеджеру на перевірку. 🐾');
-            window.location.href = 'index.html';
+            alert("Ура! Анкету успішно відправлено. Тепер вона з'явиться в панелі адміністратора!");
+            document.getElementById('addPetForm').reset(); // Очищаємо форму після успіху
         } else {
-            alert('Помилка на сервері.');
+            throw new Error(`Помилка сервера: ${response.status}`);
         }
     } catch (error) {
-        alert('Сервер зараз спить, спробуй ще раз!');
+        console.error("Помилка відправки:", error);
+        alert("Ой, щось пішло не так при відправці. Перевір з'єднання з інтернетом або стан сервера.");
+    } finally {
+        // Повертаємо кнопці початковий вигляд
+        submitBtn.innerText = originalBtnText;
+        submitBtn.disabled = false;
     }
 });

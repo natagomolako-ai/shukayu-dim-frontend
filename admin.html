@@ -6,7 +6,9 @@
     <title>Панель Адміністратора | Шукаю дім</title>
     <link rel="stylesheet" href="css/style.css"> 
     <style>
-        /* Трохи специфічних стилів саме для адмінки */
+        /* Стилі для адмінки */
+        body { background-color: #fcf8f5; margin: 0; font-family: Arial, sans-serif; }
+
         .admin-container {
             max-width: 1000px;
             margin: 40px auto;
@@ -15,6 +17,7 @@
             border-radius: 15px;
             box-shadow: 0 4px 15px rgba(0,0,0,0.1);
         }
+
         .request-card {
             border: 2px solid #f0f0f0;
             padding: 20px;
@@ -23,7 +26,9 @@
             display: flex;
             gap: 20px;
         }
+
         .request-info { flex-grow: 1; }
+
         .admin-btn {
             padding: 10px 20px;
             border: none;
@@ -32,41 +37,56 @@
             font-weight: bold;
             margin-right: 10px;
         }
+
         .btn-approve { background: #4CAF50; color: white; }
         .btn-reject { background: #f44336; color: white; }
         
-        /* Стиль для кнопки На головну */
         .back-btn {
             display: inline-block;
             padding: 8px 25px;
-            border: 2px solid #5C2E2E; /* Твій фірмовий колір */
+            border: 2px solid #6B1C1C;
             border-radius: 25px;
-            color: #5C2E2E;
+            color: #6B1C1C;
             text-decoration: none;
             font-weight: bold;
             background-color: white;
             transition: all 0.3s ease;
-        } /* <-- ОСЬ ЦЯ ДУЖКА БУЛА ПРОПУЩЕНА */
-
-        /* НОВИЙ СТИЛЬ ДЛЯ ШАПКИ АДМІНКИ */
-        .admin-header {
-            display: flex;
-            align-items: center; /* Вирівнює все по одній горизонтальній лінії */
-            justify-content: space-between;
-            padding: 40px 50px 20px 50px; /* 40px зверху, щоб не втискалося у стелю! */
-        }
-        .admin-header-side {
-            flex: 1; /* Бокові частини мають однакову ширину */
-        }
-        .admin-header-center {
-            flex: 2; /* Центр ширший, щоб заголовок стояв ідеально по центру */
-            text-align: center;
         }
 
         .back-btn:hover {
-            background-color: #5C2E2E;
+            background-color: #6B1C1C;
             color: white;
         }
+
+        /* Кнопка створення нового оголошення */
+        .create-btn {
+            display: inline-block;
+            background: #6B1C1C;
+            color: white;
+            padding: 12px 25px;
+            border-radius: 15px;
+            text-decoration: none;
+            font-size: 16px;
+            font-weight: bold;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            transition: 0.3s;
+            margin-bottom: 25px;
+        }
+
+        .create-btn:hover {
+            background: #4a1313;
+            transform: translateY(-2px);
+        }
+
+        .admin-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 40px 50px 20px 50px;
+        }
+
+        .admin-header-side { flex: 1; }
+        .admin-header-center { flex: 2; text-align: center; }
     </style>
 </head>
 <body>
@@ -76,7 +96,7 @@
         </div>
         
         <div class="admin-header-center">
-            <h2 style="margin: 0; color: #5C2E2E;">  Адміністратор 🐾</h2>
+            <h2 style="margin: 0; color: #6B1C1C;">Адміністратор 🐾</h2>
         </div>
         
         <div class="admin-header-side" style="text-align: right;">
@@ -84,6 +104,14 @@
     </header>
 
     <div class="admin-container">
+        <div style="text-align: center;">
+            <a href="add-pet.html?admin=true" class="create-btn">
+                ➕ Створити нове оголошення
+            </a>
+        </div>
+
+        <hr style="border: 0; border-top: 1px solid #eee; margin-bottom: 25px;">
+
         <h3>Нові оголошення на перевірку:</h3>
         
         <div id="requests-list">

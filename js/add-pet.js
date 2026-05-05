@@ -19,7 +19,8 @@ document.getElementById('addPetForm').addEventListener('submit', async function(
         region: document.getElementById('petRegion').value,
         city: document.getElementById('petCity').value,
         description: document.getElementById('petDescription').value,
-        photo: "" // Поки залишаємо пустим
+        photos: [], // ПОРОЖНІЙ СПИСОК (готуємо місце для справжніх фото)
+        status: window.location.search.includes('admin=true') ? 'published' : 'pending' 
     };
 
     // 4. Адреса твого бекенду (шлях для створення оголошень)

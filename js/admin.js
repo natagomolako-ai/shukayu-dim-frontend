@@ -1,74 +1,76 @@
-// 1. ГОЛОВНЕ ПОСИЛАННЯ НА ТВІЙ БЕКЕНД
-// (Замінимо його на правильне на наступному кроці)
-const API_URL = "https://shukayu-dim-backendi.onrender.com/api"; 
+const API_URL = "https://shukayu-dim-backendi.onrender.com/api/pets";
 
-// ==========================================
-// ЕТАП 1: ФУНКЦІЯ ЗАВАНТАЖЕННЯ ВСІХ ЗАЯВОК
-// ==========================================
-async function loadPets() {
-    const listContainer = document.getElementById('requests-list');
-
+// 1. ЗАВАНТАЖУЄМО АНКЕТИ
+async function loadRequests() {
     try {
-        const response = await fetch(`${API_URL}/pets`); // Використовуємо спільний API_URL
+        const response = await fetch(API_URL);
+        const allPets = await response.json();
         
-        if (!response.ok) {
-            throw new Error(`Помилка сервера: ${response.status}`);
-        }
+        // Фільтруємо: показуємо ТІЛЬКИ ті, що чекають на перевірку (pending)
+        const pendingPets = allPets.filter(pet => pet.status === 'pending');
+        
+        const listContainer = document.getElementById('requests-list');
+        listContainer.innerHTML = ''; // Очищаємо екран перед завантаженням
 
-        const pets = await response.json();
-        listContainer.innerHTML = '';
-
-        if (pets.length === 0) {
-            listContainer.innerHTML = '<p>Поки що немає нових заявок.</p>';
+        // Якщо перевіряти нічого:
+        if (pendingPets.length === 0) {
+            listContainer.innerHTML = '<p>🎉 Немає нових заявок на перевірку. Ви всі розібрали!</p>';
             return;
         }
 
-        pets.forEach(pet => {
+        // Малюємо картку для кожної тваринки
+        pendingPets.forEach(pet => {
             const card = document.createElement('div');
             card.className = 'request-card';
-
             card.innerHTML = `
                 <div class="request-info">
-                    <h4 style="margin-top: 0; color: #5C2E2E;">${pet.name || 'Без імені'} (${pet.type || 'Тваринка'})</h4>
-                    <p style="margin: 5px 0;"><strong>Вік:</strong> ${pet.age || 'Не вказано'}</p>
-                    <p style="margin: 5px 0;"><strong>Місто:</strong> ${pet.city || 'Не вказано'}</p>
-                    <p style="margin: 5px 0;"><strong>Опис:</strong> ${pet.description || 'Немає опису'}</p>
+                    <h4 style="margin-top:0; color: #6B1C1C;">${pet.name ? pet.name : 'Без імені'} (${pet.type})</h4>
+                    <p><strong>Місто:</strong> ${pet.city}</p>
+                    <p><strong>Вік:</strong> ${pet.age}</p>
+                    <p><strong>Опис:</strong> ${pet.description}</p>
                 </div>
-                <div style="display: flex; flex-direction: column; gap: 10px; justify-content: center;">
-                    <button class="admin-btn btn-approve" onclick="approvePet('${pet.id}')">✅ Опублікувати</button>
-                    <button class="admin-btn btn-reject">🗑️ Видалити</button>
-                    <button class="admin-btn" style="background: #2196F3; color: white;">✏️ Редагувати</button>
+                <div style="display: flex; flex-direction: column; gap: 10px;">
+                    <button class="admin-btn btn-approve" onclick="publishPet('${pet.id}')">✅ Опублікувати</button>
+                    <button class="admin-btn btn-reject" onclick="deletePet('${pet.id}')">❌ Видалити</button>
                 </div>
             `;
-
             listContainer.appendChild(card);
         });
-
     } catch (error) {
-        console.error("Помилка завантаження:", error);
-        listContainer.innerHTML = '<p style="color: red;">Помилка з\'єднання з сервером. Перевір, чи працює бекенд на Render.</p>';
+        console.error("Помилка:", error);
+        document.getElementById('requests-list').innerHTML = '<p style="color:red;">Помилка зв\'язку з базою даних.</p>';
     }
 }
 
-// ==========================================
-// ЕТАП 2: ТВІЙ КОД ДЛЯ СХВАЛЕННЯ (ОПУБЛІКУВАТИ)
-// ==========================================
-async function approvePet(petId) {
+// 2. КНОПКА "ОПУБЛІКУВАТИ"
+async function publishPet(id) {
+    if (!confirm("Точно опублікувати цю анкету на сайті?")) return;
+    
     try {
-        const response = await fetch(`${API_URL}/pets/${petId}`, {
-            method: 'PUT', // Або PATCH, залежить від твого сервера
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ status: 'published' })
-        });
-
+        const response = await fetch(`${API_URL}/${id}/publish`, { method: 'PUT' });
         if (response.ok) {
-            alert(`Оголошення успішно опубліковано!`);
-            loadPets(); // Оновлюємо список після схвалення
+            alert("Анкету успішно опубліковано!");
+            loadRequests(); // Перезавантажуємо список, щоб вона зникла з екрану
         }
     } catch (error) {
-        console.error('Помилка при схваленні:', error);
+        alert("Ой, помилка при публікації.");
     }
 }
 
-// Запускаємо завантаження при відкритті сторінки
-document.addEventListener('DOMContentLoaded', loadPets);
+// 3. КНОПКА "ВИДАЛИТИ"
+async function deletePet(id) {
+    if (!confirm("Увага! Точно видалити цю анкету назавжди?")) return;
+    
+    try {
+        const response = await fetch(`${API_URL}/${id}`, { method: 'DELETE' });
+        if (response.ok) {
+            alert("Анкету видалено з бази.");
+            loadRequests(); // Перезавантажуємо список
+        }
+    } catch (error) {
+        alert("Ой, помилка при видаленні.");
+    }
+}
+
+// Запускаємо завантаження одразу, коли відкривається сторінка
+loadRequests();

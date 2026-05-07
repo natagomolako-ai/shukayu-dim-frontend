@@ -95,4 +95,4 @@ async function deletePet(id) {
     } catch (error) { alert("Помилка."); }
 }
 
-loadRequests();
+loadRequests()

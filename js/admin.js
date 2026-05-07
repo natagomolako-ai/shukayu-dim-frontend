@@ -24,16 +24,21 @@ async function loadRequests() {
             try { photosArray = pet.photos ? JSON.parse(pet.photos) : []; } 
             catch (e) { photosArray = []; }
 
-            // Малюємо карусель або заглушку
+            // Малюємо карусель з кнопками < та >
             let photosHTML = '';
             if (photosArray.length > 0) {
                 photosHTML = `
-                    <div style="width: 140px; height: 140px; border-radius: 12px; overflow-x: auto; overflow-y: hidden; display: flex; scroll-snap-type: x mandatory; scrollbar-width: none; background: #faf5f5; border: 2px solid #6B1C1C;">
-                        ${photosArray.map(url => `
-                            <img src="${url}" style="flex: 0 0 100%; height: 100%; object-fit: cover; scroll-snap-align: start;" alt="Фото">
-                        `).join('')}
+                    <div style="position: relative; width: 140px; height: 140px;">
+                        ${photosArray.length > 1 ? `<button onclick="this.nextElementSibling.scrollBy({left: -140, behavior: 'smooth'})" style="position: absolute; left: 5px; top: 50%; transform: translateY(-50%); background: rgba(0,0,0,0.6); color: white; border: none; border-radius: 50%; width: 25px; height: 25px; cursor: pointer; z-index: 10; display: flex; align-items: center; justify-content: center; font-weight: bold;">&lt;</button>` : ''}
+                        
+                        <div style="width: 140px; height: 140px; border-radius: 12px; overflow-x: auto; overflow-y: hidden; display: flex; scroll-snap-type: x mandatory; scrollbar-width: none; background: #faf5f5; border: 2px solid #6B1C1C;">
+                            ${photosArray.map(url => `
+                                <img src="${url}" style="flex: 0 0 100%; height: 100%; object-fit: cover; scroll-snap-align: start;" alt="Фото">
+                            `).join('')}
+                        </div>
+                        
+                        ${photosArray.length > 1 ? `<button onclick="this.previousElementSibling.scrollBy({left: 140, behavior: 'smooth'})" style="position: absolute; right: 5px; top: 50%; transform: translateY(-50%); background: rgba(0,0,0,0.6); color: white; border: none; border-radius: 50%; width: 25px; height: 25px; cursor: pointer; z-index: 10; display: flex; align-items: center; justify-content: center; font-weight: bold;">&gt;</button>` : ''}
                     </div>
-                    ${photosArray.length > 1 ? `<div style="text-align: center; font-size: 11px; color: #888; margin-top: 5px;">↔️ Гортайте фото</div>` : ''}
                 `;
             } else {
                 photosHTML = `
@@ -48,7 +53,7 @@ async function loadRequests() {
                     ${photosHTML}
                 </div>
 
-                <div class="request-info" style="flex-grow: 1; padding-left: 15px;">
+                <div class="request-info" style="flex-grow: 1; padding-left: 15px; min-width: 0;">
                     <h4 style="margin-top:0; color: #6B1C1C; font-size: 20px;">
                         ${pet.name ? pet.name : 'Без імені'} (${pet.type})
                     </h4>
@@ -59,7 +64,7 @@ async function loadRequests() {
                         <div><strong>⚕️ Стерилізація:</strong> ${pet.sterilization}</div>
                         <div><strong>💉 Вакцинація:</strong> ${pet.vaccination}</div>
                     </div>
-                    <p style="margin: 0; padding: 12px; background: #fcf8f5; border-radius: 8px; border-left: 4px solid #6B1C1C; font-size: 14px;">
+                    <p style="margin: 0; padding: 12px; background: #fcf8f5; border-radius: 8px; border-left: 4px solid #6B1C1C; font-size: 14px; word-break: break-all; overflow-wrap: break-word;">
                         <strong>📝 Опис:</strong> ${pet.description}
                     </p>
                 </div>
@@ -95,4 +100,4 @@ async function deletePet(id) {
     } catch (error) { alert("Помилка."); }
 }
 
-loadRequests()
+loadRequests();

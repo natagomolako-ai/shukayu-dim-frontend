@@ -162,17 +162,18 @@
                         <textarea id="petDescription" style="height: 100%; min-height: 140px; resize: none;" placeholder="Розкажіть про звички, особливості або як тваринка потрапила до вас..."></textarea>
                     </div>
                     
-                    <div class="photo-upload" style="grid-column: 3 / 4; margin: 0;">
-                        <span style="font-size: 35px; margin-bottom: 10px;">📸</span>
-                        <b>Натисніть сюди</b><br>щоб додати фото<br>
-                        <span style="font-size: 13px; color: #888; margin-top: 5px;">(або перетягніть файл)</span>
-                    </div>
+                 <label class="photo-upload" style="grid-column: 3 / 4; margin: 0; cursor: pointer; text-align: center; display: block; padding: 20px;">
+    <input type="file" id="petPhotos" accept="image/*" multiple style="display: none;">
+    
+    <div id="photo-text">
+        <span style="font-size: 35px; display: block; margin-bottom: 10px;">📸</span>
+        <b style="color: #6B1C1C;">Натисніть сюди</b><br>щоб додати фото<br>
+        <span style="font-size: 13px; color: #888; margin-top: 5px;">(можна вибрати кілька)</span>
+    </div>
+</label>
 
                 </div>
-<div class="form-group">
-    <label for="petPhotos">📸 Фотографії (можна вибрати кілька):</label>
-    <input type="file" id="petPhotos" accept="image/*" multiple style="margin-top: 10px;">
-</div>
+
                 <button type="submit" class="submit-ad-btn">Відправити на перевірку менеджеру</button>
             </form>
         </div>

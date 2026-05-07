@@ -1,9 +1,11 @@
 const API_URL = "https://shukayu-dim-backendi.onrender.com/api/pets";
+let currentPets = []; // Секретна пам'ять для редагування
 
 async function loadRequests() {
     try {
         const response = await fetch(API_URL);
         const allPets = await response.json();
+        currentPets = allPets; // Зберігаємо всіх тваринок у пам'ять
         const pendingPets = allPets.filter(pet => pet.status === 'pending');
         
         const listContainer = document.getElementById('requests-list');
@@ -19,12 +21,10 @@ async function loadRequests() {
             card.className = 'request-card';
             card.style.alignItems = 'center'; 
             
-            // Розпаковуємо список фотографій з бази
             let photosArray = [];
             try { photosArray = pet.photos ? JSON.parse(pet.photos) : []; } 
             catch (e) { photosArray = []; }
 
-            // Малюємо карусель з кнопками < та >
             let photosHTML = '';
             if (photosArray.length > 0) {
                 photosHTML = `
@@ -90,14 +90,87 @@ async function publishPet(id) {
     } catch (error) { alert("Помилка."); }
 }
 
-function editPet(id) { alert("🛠️ Функція редагування в розробці!"); }
-
 async function deletePet(id) {
     if (!confirm("Точно видалити?")) return;
     try {
         const response = await fetch(`${API_URL}/${id}`, { method: 'DELETE' });
         if (response.ok) { alert("Видалено!"); loadRequests(); }
     } catch (error) { alert("Помилка."); }
+}
+
+// ---------------------------------------------------
+// НОВЕ: КРАСИВЕ ВІКНО РЕДАГУВАННЯ
+// ---------------------------------------------------
+function editPet(id) {
+    const pet = currentPets.find(p => p.id === id);
+    if (!pet) return;
+
+    // Створюємо фон вікна
+    const modal = document.createElement('div');
+    modal.style.cssText = "position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); display: flex; align-items: center; justify-content: center; z-index: 1000;";
+    
+    // Малюємо саму картку
+    modal.innerHTML = `
+        <div style="background: white; padding: 25px; border-radius: 15px; width: 90%; max-width: 400px; border: 3px solid #6B1C1C; box-shadow: 0 10px 25px rgba(0,0,0,0.2);">
+            <h3 style="color: #6B1C1C; margin-top: 0; text-align: center;">✏️ Редагувати анкету</h3>
+            
+            <label style="font-weight: bold; font-size: 14px; color: #555;">Ім'я:</label>
+            <input type="text" id="edit-name" value="${pet.name || ''}" style="width: 100%; margin-bottom: 15px; padding: 8px; border: 1px solid #ccc; border-radius: 5px; box-sizing: border-box;">
+            
+            <label style="font-weight: bold; font-size: 14px; color: #555;">Вік:</label>
+            <input type="text" id="edit-age" value="${pet.age || ''}" style="width: 100%; margin-bottom: 15px; padding: 8px; border: 1px solid #ccc; border-radius: 5px; box-sizing: border-box;">
+            
+            <label style="font-weight: bold; font-size: 14px; color: #555;">Місто:</label>
+            <input type="text" id="edit-city" value="${pet.city || ''}" style="width: 100%; margin-bottom: 15px; padding: 8px; border: 1px solid #ccc; border-radius: 5px; box-sizing: border-box;">
+            
+            <label style="font-weight: bold; font-size: 14px; color: #555;">Опис:</label>
+            <textarea id="edit-desc" style="width: 100%; height: 100px; margin-bottom: 20px; padding: 8px; border: 1px solid #ccc; border-radius: 5px; box-sizing: border-box; resize: none;">${pet.description || ''}</textarea>
+            
+            <div style="display: flex; gap: 10px;">
+                <button id="cancel-edit" style="background: #f1f1f1; color: #333; border: 1px solid #ccc; padding: 10px; border-radius: 8px; cursor: pointer; flex: 1; font-weight: bold;">Скасувати</button>
+                <button id="save-edit" style="background: #4CAF50; color: white; border: none; padding: 10px; border-radius: 8px; cursor: pointer; flex: 1; font-weight: bold;">💾 Зберегти</button>
+            </div>
+        </div>
+    `;
+    document.body.appendChild(modal);
+
+    // Закрити без збереження
+    document.getElementById('cancel-edit').onclick = () => modal.remove();
+
+    // Зберегти нові дані
+    document.getElementById('save-edit').onclick = async () => {
+        const btn = document.getElementById('save-edit');
+        btn.innerText = "Зберігаємо...";
+        btn.disabled = true;
+
+        const updatedData = {
+            name: document.getElementById('edit-name').value,
+            age: document.getElementById('edit-age').value,
+            city: document.getElementById('edit-city').value,
+            description: document.getElementById('edit-desc').value
+        };
+
+        try {
+            const response = await fetch(`${API_URL}/${id}`, {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(updatedData)
+            });
+
+            if (response.ok) {
+                modal.remove();
+                loadRequests(); // Перемальовуємо адмінку з новими даними
+            } else {
+                alert("Помилка збереження на сервері");
+                btn.innerText = "💾 Зберегти";
+                btn.disabled = false;
+            }
+        } catch (error) {
+            alert("Помилка з'єднання");
+            btn.innerText = "💾 Зберегти";
+            btn.disabled = false;
+        }
+    };
 }
 
 loadRequests();

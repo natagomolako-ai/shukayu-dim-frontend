@@ -105,39 +105,83 @@ function editPet(id) {
     const pet = currentPets.find(p => p.id === id);
     if (!pet) return;
 
-    // Створюємо фон вікна
     const modal = document.createElement('div');
-    modal.style.cssText = "position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); display: flex; align-items: center; justify-content: center; z-index: 1000;";
+    modal.style.cssText = "position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); display: flex; align-items: center; justify-content: center; z-index: 1000; padding: 20px; box-sizing: border-box;";
     
-    // Малюємо саму картку
     modal.innerHTML = `
-        <div style="background: white; padding: 25px; border-radius: 15px; width: 90%; max-width: 400px; border: 3px solid #6B1C1C; box-shadow: 0 10px 25px rgba(0,0,0,0.2);">
-            <h3 style="color: #6B1C1C; margin-top: 0; text-align: center;">✏️ Редагувати анкету</h3>
+        <div style="background: white; padding: 25px; border-radius: 15px; width: 100%; max-width: 500px; max-height: 90vh; overflow-y: auto; border: 3px solid #6B1C1C; box-shadow: 0 10px 25px rgba(0,0,0,0.2);">
+            <h3 style="color: #6B1C1C; margin-top: 0; text-align: center;">✏️ Повне редагування</h3>
             
-            <label style="font-weight: bold; font-size: 14px; color: #555;">Ім'я:</label>
-            <input type="text" id="edit-name" value="${pet.name || ''}" style="width: 100%; margin-bottom: 15px; padding: 8px; border: 1px solid #ccc; border-radius: 5px; box-sizing: border-box;">
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+                <div>
+                    <label style="font-weight: bold; font-size: 13px;">Ім'я:</label>
+                    <input type="text" id="edit-name" value="${pet.name || ''}" style="width: 100%; padding: 8px; margin-bottom: 10px; border: 1px solid #ccc; border-radius: 5px;">
+                </div>
+                <div>
+                    <label style="font-weight: bold; font-size: 13px;">Тип:</label>
+                    <select id="edit-type" style="width: 100%; padding: 8px; margin-bottom: 10px; border: 1px solid #ccc; border-radius: 5px;">
+                        <option value="Песик" ${pet.type === 'Песик' ? 'selected' : ''}>Песик</option>
+                        <option value="Котик" ${pet.type === 'Котик' ? 'selected' : ''}>Котик</option>
+                        <option value="Інше" ${pet.type === 'Інше' ? 'selected' : ''}>Інше</option>
+                    </select>
+                </div>
+            </div>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+                <div>
+                    <label style="font-weight: bold; font-size: 13px;">Стать:</label>
+                    <select id="edit-gender" style="width: 100%; padding: 8px; margin-bottom: 10px; border: 1px solid #ccc; border-radius: 5px;">
+                        <option value="Хлопчик" ${pet.gender === 'Хлопчик' ? 'selected' : ''}>Хлопчик</option>
+                        <option value="Дівчинка" ${pet.gender === 'Дівчинка' ? 'selected' : ''}>Дівчинка</option>
+                    </select>
+                </div>
+                <div>
+                    <label style="font-weight: bold; font-size: 13px;">Вік:</label>
+                    <input type="text" id="edit-age" value="${pet.age || ''}" style="width: 100%; padding: 8px; margin-bottom: 10px; border: 1px solid #ccc; border-radius: 5px;">
+                </div>
+            </div>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+                <div>
+                    <label style="font-weight: bold; font-size: 13px;">Область:</label>
+                    <input type="text" id="edit-region" value="${pet.region || ''}" style="width: 100%; padding: 8px; margin-bottom: 10px; border: 1px solid #ccc; border-radius: 5px;">
+                </div>
+                <div>
+                    <label style="font-weight: bold; font-size: 13px;">Місто:</label>
+                    <input type="text" id="edit-city" value="${pet.city || ''}" style="width: 100%; padding: 8px; margin-bottom: 10px; border: 1px solid #ccc; border-radius: 5px;">
+                </div>
+            </div>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+                <div>
+                    <label style="font-weight: bold; font-size: 13px;">Стерилізація:</label>
+                    <select id="edit-steril" style="width: 100%; padding: 8px; margin-bottom: 10px; border: 1px solid #ccc; border-radius: 5px;">
+                        <option value="Так" ${pet.sterilization === 'Так' ? 'selected' : ''}>Так</option>
+                        <option value="Ні" ${pet.sterilization === 'Ні' ? 'selected' : ''}>Ні</option>
+                    </select>
+                </div>
+                <div>
+                    <label style="font-weight: bold; font-size: 13px;">Вакцинація:</label>
+                    <select id="edit-vaccine" style="width: 100%; padding: 8px; margin-bottom: 10px; border: 1px solid #ccc; border-radius: 5px;">
+                        <option value="Так" ${pet.vaccination === 'Так' ? 'selected' : ''}>Так</option>
+                        <option value="Ні" ${pet.vaccination === 'Ні' ? 'selected' : ''}>Ні</option>
+                    </select>
+                </div>
+            </div>
             
-            <label style="font-weight: bold; font-size: 14px; color: #555;">Вік:</label>
-            <input type="text" id="edit-age" value="${pet.age || ''}" style="width: 100%; margin-bottom: 15px; padding: 8px; border: 1px solid #ccc; border-radius: 5px; box-sizing: border-box;">
-            
-            <label style="font-weight: bold; font-size: 14px; color: #555;">Місто:</label>
-            <input type="text" id="edit-city" value="${pet.city || ''}" style="width: 100%; margin-bottom: 15px; padding: 8px; border: 1px solid #ccc; border-radius: 5px; box-sizing: border-box;">
-            
-            <label style="font-weight: bold; font-size: 14px; color: #555;">Опис:</label>
-            <textarea id="edit-desc" style="width: 100%; height: 100px; margin-bottom: 20px; padding: 8px; border: 1px solid #ccc; border-radius: 5px; box-sizing: border-box; resize: none;">${pet.description || ''}</textarea>
+            <label style="font-weight: bold; font-size: 13px;">Опис:</label>
+            <textarea id="edit-desc" style="width: 100%; height: 80px; margin-bottom: 20px; padding: 8px; border: 1px solid #ccc; border-radius: 5px; resize: none;">${pet.description || ''}</textarea>
             
             <div style="display: flex; gap: 10px;">
                 <button id="cancel-edit" style="background: #f1f1f1; color: #333; border: 1px solid #ccc; padding: 10px; border-radius: 8px; cursor: pointer; flex: 1; font-weight: bold;">Скасувати</button>
-                <button id="save-edit" style="background: #4CAF50; color: white; border: none; padding: 10px; border-radius: 8px; cursor: pointer; flex: 1; font-weight: bold;">💾 Зберегти</button>
+                <button id="save-edit" style="background: #4CAF50; color: white; border: none; padding: 10px; border-radius: 8px; cursor: pointer; flex: 1; font-weight: bold;">💾 Зберегти все</button>
             </div>
         </div>
     `;
     document.body.appendChild(modal);
 
-    // Закрити без збереження
     document.getElementById('cancel-edit').onclick = () => modal.remove();
 
-    // Зберегти нові дані
     document.getElementById('save-edit').onclick = async () => {
         const btn = document.getElementById('save-edit');
         btn.innerText = "Зберігаємо...";
@@ -145,8 +189,13 @@ function editPet(id) {
 
         const updatedData = {
             name: document.getElementById('edit-name').value,
+            type: document.getElementById('edit-type').value,
+            gender: document.getElementById('edit-gender').value,
             age: document.getElementById('edit-age').value,
+            region: document.getElementById('edit-region').value,
             city: document.getElementById('edit-city').value,
+            sterilization: document.getElementById('edit-steril').value,
+            vaccination: document.getElementById('edit-vaccine').value,
             description: document.getElementById('edit-desc').value
         };
 
@@ -159,18 +208,16 @@ function editPet(id) {
 
             if (response.ok) {
                 modal.remove();
-                loadRequests(); // Перемальовуємо адмінку з новими даними
+                loadRequests();
             } else {
-                alert("Помилка збереження на сервері");
-                btn.innerText = "💾 Зберегти";
+                alert("Помилка збереження");
+                btn.innerText = "💾 Зберегти все";
                 btn.disabled = false;
             }
         } catch (error) {
             alert("Помилка з'єднання");
-            btn.innerText = "💾 Зберегти";
+            btn.innerText = "💾 Зберегти все";
             btn.disabled = false;
         }
     };
 }
-
-loadRequests();

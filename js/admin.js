@@ -221,3 +221,4 @@ function editPet(id) {
         }
     };
 }
+loadRequests();

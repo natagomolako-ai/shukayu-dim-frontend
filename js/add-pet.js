@@ -1,42 +1,5 @@
-// ----------------------------------------------------
-// НОВА СУПЕР-ФУНКЦІЯ: Стискає фото перед відправкою!
-// ----------------------------------------------------
-function compressImage(file) {
-    return new Promise((resolve, reject) => {
-        const reader = new FileReader();
-        reader.readAsDataURL(file);
-        reader.onload = (event) => {
-            const img = new Image();
-            img.src = event.target.result;
-            img.onload = () => {
-                // Створюємо віртуальне полотно для малювання
-                const canvas = document.createElement('canvas');
-                const MAX_WIDTH = 800; // Максимальна ширина фото
-                const MAX_HEIGHT = 800; // Максимальна висота
-                let width = img.width;
-                let height = img.height;
-
-                // Вираховуємо нові пропорції
-                if (width > height && width > MAX_WIDTH) {
-                    height *= MAX_WIDTH / width;
-                    width = MAX_WIDTH;
-                } else if (height > MAX_HEIGHT) {
-                    width *= MAX_HEIGHT / height;
-                    height = MAX_HEIGHT;
-                }
-
-                canvas.width = width;
-                canvas.height = height;
-                const ctx = canvas.getContext('2d');
-                ctx.drawImage(img, 0, 0, width, height);
-
-                // Перетворюємо назад у текст, але вже стиснений у JPEG (якість 70%)
-                resolve(canvas.toDataURL('image/jpeg', 0.7));
-            };
-        };
-        reader.onerror = error => reject(error);
-    });
-}
+// Твій персональний ключ для хмари ImgBB
+const IMGBB_API_KEY = "5ead51ccacb9fae89042829844ea7069";
 
 // ----------------------------------------------------
 // МІНЯЄМО ТЕКСТ ПРИ ВИБОРІ ФОТО
@@ -55,24 +18,46 @@ fileInput.addEventListener('change', () => {
 });
 // ----------------------------------------------------
 
+// ----------------------------------------------------
+// ФУНКЦІЯ: Відправляє фото у хмару і повертає посилання
+// ----------------------------------------------------
+async function uploadToImgBB(file) {
+    const formData = new FormData();
+    formData.append('image', file);
+    
+    const response = await fetch(`https://api.imgbb.com/1/upload?key=${IMGBB_API_KEY}`, {
+        method: 'POST',
+        body: formData
+    });
+    
+    const data = await response.json();
+    if (data.success) {
+        return data.data.url; // Отримуємо коротке посилання
+    } else {
+        throw new Error("Не вдалося завантажити фото у хмару");
+    }
+}
+
 // ВІДПРАВКА ФОРМИ
 document.getElementById('addPetForm').addEventListener('submit', async function(event) {
     event.preventDefault(); 
 
     const submitBtn = document.querySelector('.submit-ad-btn');
-    submitBtn.innerText = "Обробка фото та відправка... 🐾";
     submitBtn.disabled = true;
 
     try {
-        // 1. Збираємо і СТИСКАЄМО фото
+        // 1. Завантажуємо фото у хмару ImgBB
+        submitBtn.innerText = "Завантажуємо фото у хмару... ☁️🐾";
         const files = Array.from(fileInput.files);
-        const photosBase64 = [];
+        const photoURLs = [];
+        
         for (const file of files) {
-            const base64 = await compressImage(file); // Викликаємо розумну функцію
-            photosBase64.push(base64);
+            const url = await uploadToImgBB(file); // отримуємо посилання
+            photoURLs.push(url);
         }
 
-        // 2. Збираємо дані
+        // 2. Відправляємо анкету з посиланнями в нашу базу
+        submitBtn.innerText = "Зберігаємо анкету... 📝";
         const petData = {
             name: document.getElementById('petName').value,
             type: document.getElementById('petType').value,
@@ -83,7 +68,7 @@ document.getElementById('addPetForm').addEventListener('submit', async function(
             region: document.getElementById('petRegion').value,
             city: document.getElementById('petCity').value,
             description: document.getElementById('petDescription').value,
-            photos: photosBase64,
+            photos: photoURLs, // ТЕПЕР ТУТ ЛЕГЕНЬКІ ПОСИЛАННЯ!
             status: window.location.search.includes('admin=true') ? 'published' : 'pending' 
         };
 
@@ -96,7 +81,7 @@ document.getElementById('addPetForm').addEventListener('submit', async function(
         });
 
         if (response.ok) {
-            alert("Успішно! Оголошення з фото відправлено.");
+            alert("Успішно! Оголошення відправлено.");
             document.getElementById('addPetForm').reset();
             photoText.innerHTML = `
                 <span style="font-size: 35px; display: block; margin-bottom: 10px;">📸</span>
@@ -104,11 +89,11 @@ document.getElementById('addPetForm').addEventListener('submit', async function(
                 <span style="font-size: 13px; color: #888; margin-top: 5px;">(можна вибрати кілька)</span>
             `;
         } else {
-            alert("Помилка сервера. Можливо, фото занадто великі?");
+            alert("Помилка сервера при збереженні анкети.");
         }
     } catch (error) {
         console.error("Помилка:", error);
-        alert("Не вдалося відправити.");
+        alert("Ой! Щось пішло не так. Перевір інтернет.");
     } finally {
         submitBtn.innerText = "Опублікувати оголошення";
         submitBtn.disabled = false;

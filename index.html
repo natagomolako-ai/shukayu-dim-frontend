@@ -80,6 +80,7 @@
             font-size: 16px;
             cursor: pointer;
             margin-top: 10px;
+            transition: 0.3s;
         }
         .btn-apply-filters:hover { background: #4e342e; }
 
@@ -138,6 +139,7 @@
             display: flex;
             gap: 30px;
             align-items: flex-start;
+            width: 100%;
         }
         .pets-grid {
             display: grid;
@@ -148,48 +150,63 @@
         .pet-card {
             background: #fff;
             border-radius: 20px;
-            border: 2px solid #5d4037;
+            border: 2px solid #eee;
             overflow: hidden;
             box-shadow: 0 4px 15px rgba(0,0,0,0.05);
             display: flex;
             flex-direction: column;
-            transition: transform 0.3s;
+            transition: transform 0.3s, box-shadow 0.3s;
         }
-        .pet-card:hover { transform: translateY(-5px); }
+        .pet-card:hover { transform: translateY(-5px); box-shadow: 0 8px 25px rgba(0,0,0,0.1); border-color: #d7ccc8; }
+        
+        /* ТІЛЬКИ ОДНЕ ФОТО НА КАРТЦІ */
         .pet-card-photo {
             width: 100%;
-            height: 200px;
+            height: 220px;
             background: #f1f1f1;
             position: relative;
-            display: flex;
-            overflow-x: auto;
-            scroll-snap-type: x mandatory;
-            scrollbar-width: none;
+            overflow: hidden;
         }
         .pet-card-photo img {
             width: 100%;
             height: 100%;
             object-fit: cover;
-            flex: 0 0 100%;
-            scroll-snap-align: start;
         }
         .pet-card-info { padding: 20px; display: flex; flex-direction: column; flex-grow: 1; }
-        .pet-card-name { font-size: 22px; color: #5d4037; margin: 0 0 15px 0; font-weight: bold; }
-        .pet-card-details { font-size: 14px; color: #555; margin-bottom: 20px; line-height: 1.6; }
-        .pet-card-details strong { color: #333; }
+        .pet-card-name { font-size: 22px; color: #1c2b36; margin: 0 0 15px 0; font-weight: 800; }
+        
+        /* 4 ПУНКТИ В 2 РЯДКИ (як на твоєму дизайні) */
+        .pet-card-details { 
+            display: grid; 
+            grid-template-columns: 1fr 1fr; 
+            gap: 12px; 
+            margin-bottom: 20px; 
+            font-size: 14px; 
+            color: #666; 
+        }
+        .pet-card-details .detail-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .pet-card-details .detail-icon {
+            color: #a6c24c; /* Колір іконок під твій дизайн */
+            font-size: 16px;
+        }
+
         .btn-more {
             margin-top: auto;
             padding: 12px;
-            background: #a6c24c;
-            color: #fff;
+            background: #fff;
+            color: #5d4037;
             text-align: center;
             border-radius: 12px;
             font-weight: bold;
             cursor: pointer;
-            border: none;
+            border: 2px solid #5d4037;
             transition: 0.3s;
         }
-        .btn-more:hover { background: #8eab3b; }
+        .btn-more:hover { background: #5d4037; color: #fff; }
 
         /* --- ВЕЛИКЕ ВІКНО ОГОЛОШЕННЯ --- */
         .pet-modal-overlay {
@@ -206,6 +223,7 @@
             .pet-modal-content { flex-direction: column; overflow-y: auto; }
             .pet-modal-photo-container { height: 300px; }
         }
+        /* В модалці фото можна гортати */
         .pet-modal-photo-container {
             flex: 1; background: #f8f9fa; position: relative; display: flex;
             overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none;
@@ -216,6 +234,20 @@
             position: absolute; top: 15px; right: 20px; font-size: 28px; cursor: pointer;
             color: #5d4037; z-index: 10; font-weight: bold;
         }
+
+        /* КРАСИВИЙ ЗАГОЛОВОК З ЛІНІЄЮ */
+        .modal-header-centered {
+            text-align: center;
+            border-bottom: 2px solid #e0e0e0;
+            padding-bottom: 15px;
+            margin-bottom: 20px;
+        }
+        .modal-header-centered h2 {
+            color: #5d4037; 
+            font-size: 32px; 
+            margin: 0;
+        }
+
         .modal-action-btns { display: flex; gap: 15px; margin-top: auto; padding-top: 20px; }
         .btn-share {
             flex: 1; padding: 14px; border: 2px solid #5d4037; background: #fff; color: #5d4037;
@@ -223,17 +255,30 @@
         }
         .btn-share:hover { background: #f1f1f1; }
         .btn-adopt {
-            flex: 1; padding: 14px; background: #a6c24c; border: none; color: #fff;
+            flex: 1; padding: 14px; background: #ea5b5b; border: none; color: #fff;
             font-weight: bold; border-radius: 12px; cursor: pointer; transition: 0.3s;
         }
-        .btn-adopt:hover { background: #8eab3b; }
+        .btn-adopt:hover { background: #d34a4a; }
+
+        /* РОЗДІЛИ САЙТУ */
+        #adopt-view { display: none; } /* Сховано за замовчуванням */
+        #home-view { 
+            width: 100%; 
+            min-height: 50vh; 
+            display: flex; 
+            flex-direction: column; 
+            align-items: center; 
+            justify-content: center; 
+            text-align: center; 
+            color: #5d4037;
+        }
     </style>
 </head>
 <body>
 
     <header class="header">
         <div class="logo">
-            <img src="./images/logo.jpg" alt="Шукаю дім">
+            <a href="#" id="logo-link"><img src="./images/logo.jpg" alt="Шукаю дім"></a>
         </div>
         <nav class="main-menu">
             <a href="#" id="adopt-btn">Хочу забрати в родину</a>
@@ -247,9 +292,18 @@
     </header>
 
     <div class="page-layout">
-        <main class="content">
-            <aside id="filters-sidebar" class="sidebar-filters" style="display: none;">
-                
+        
+        <div id="home-view">
+            <h1>Ласкаво просимо на портал "Шукаю дім" 🐾</h1>
+            <p style="font-size: 18px; color: #666; max-width: 600px; line-height: 1.6;">
+                пізніше
+                <br><br>
+                Щоб переглянути пухнастиків, які шукають родину, натисніть <b>«Хочу забрати в родину»</b> в меню зверху!
+            </p>
+        </div>
+
+        <main class="content" id="adopt-view">
+            <aside id="filters-sidebar" class="sidebar-filters">
                 <div class="type-card active" data-type="Усі"><span>🐾 Усі тварини</span></div>
                 <div class="type-card" data-type="Песик"><span>🐶 Песики</span></div>
                 <div class="type-card" data-type="Котик"><span>🐱 Котики</span></div>
@@ -324,7 +378,9 @@
                 </div>
             
             <div class="pet-modal-info">
-                <h2 id="modal-name" style="color: #5d4037; font-size: 32px; margin-top: 0; margin-bottom: 20px;">Ім'я</h2>
+                <div class="modal-header-centered">
+                    <h2 id="modal-name">Ім'я</h2>
+                </div>
                 
                 <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 25px; font-size: 15px; color: #444;">
                     <div><strong>📍 Локація:</strong> <span id="modal-location"></span></div>
@@ -338,8 +394,8 @@
                 <p id="modal-desc" style="color: #555; line-height: 1.6; margin-bottom: 30px; word-wrap: break-word;"></p>
                 
                 <div class="modal-action-btns">
-                    <button class="btn-share" onclick="sharePet()">↗ Поділитися з друзями</button>
-                    <button class="btn-adopt" onclick="alert('Ця функція скоро запрацює! 🐾')">♥ Взяти додому</button>
+                    <button class="btn-share" onclick="sharePet()">↗ Поділитися</button>
+                    <button class="btn-adopt" onclick="alert('Ця функція скоро запрацює! 🐾')">⌂ Взяти додому</button>
                 </div>
             </div>
         </div>
@@ -375,18 +431,30 @@
         const loginLink = document.getElementById('login-link');
         const closeModal = document.getElementById('close-modal');
         const adoptBtn = document.getElementById('adopt-btn');
-        const filtersSidebar = document.getElementById('filters-sidebar');
+        const logoLink = document.getElementById('logo-link');
         const createAdBtn = document.getElementById('create-ad-btn');
 
-        // --- ГЛОБАЛЬНА БАЗА ОПУБЛІКОВАНИХ ТВАРИН ---
+        // Глобальні змінні
         let allPublishedPets = [];
 
-        // 1. ЗАВАНТАЖУЄМО ТВАРИН ІЗ БАЗИ
+        // --- ПЕРЕМИКАННЯ ВИГЛЯДУ (Головна <-> Каталог) ---
+        adoptBtn.onclick = (e) => {
+            e.preventDefault();
+            document.getElementById('home-view').style.display = 'none';
+            document.getElementById('adopt-view').style.display = 'flex';
+        };
+
+        logoLink.onclick = (e) => {
+            e.preventDefault();
+            document.getElementById('adopt-view').style.display = 'none';
+            document.getElementById('home-view').style.display = 'flex';
+        }
+
+        // 1. ЗАВАНТАЖЕННЯ З БАЗИ
         async function loadPets() {
             try {
                 const res = await fetch(`${API_URL}/api/pets`);
                 const pets = await res.json();
-                // Беремо ТІЛЬКИ ті, які ти схвалила (published)
                 allPublishedPets = pets.filter(p => p.status === 'published');
                 renderPets(allPublishedPets);
             } catch (err) {
@@ -394,7 +462,7 @@
             }
         }
 
-        // 2. ВІДМАЛЬОВУЄМО КАРТКИ НА ВІТРИНІ
+        // 2. ВІДМАЛЬОВУВАННЯ КАРТОК (ТІЛЬКИ ОДНЕ ФОТО, СІТКА 2х2)
         function renderPets(petsArray) {
             const grid = document.getElementById('pets-grid');
             grid.innerHTML = '';
@@ -408,32 +476,30 @@
                 const card = document.createElement('div');
                 card.className = 'pet-card';
 
-                // Фотографії
+                // Беремо тільки ПЕРШЕ фото
                 let photosArray = [];
                 try { photosArray = pet.photos ? JSON.parse(pet.photos) : []; } catch (e) {}
                 
-                let photosHTML = '';
-                if (photosArray.length > 0) {
-                    photosHTML = `
-                        ${photosArray.length > 1 ? `<button onclick="this.nextElementSibling.scrollBy({left: -280, behavior: 'smooth'})" style="position: absolute; left: 5px; top: 50%; transform: translateY(-50%); background: rgba(0,0,0,0.5); color: white; border: none; border-radius: 50%; width: 30px; height: 30px; cursor: pointer; z-index: 10;">&lt;</button>` : ''}
-                        <div class="pet-card-photo">
-                            ${photosArray.map(url => `<img src="${url}" alt="Фото">`).join('')}
-                        </div>
-                        ${photosArray.length > 1 ? `<button onclick="this.previousElementSibling.scrollBy({left: 280, behavior: 'smooth'})" style="position: absolute; right: 5px; top: 50%; transform: translateY(-50%); background: rgba(0,0,0,0.5); color: white; border: none; border-radius: 50%; width: 30px; height: 30px; cursor: pointer; z-index: 10;">&gt;</button>` : ''}
-                    `;
-                } else {
-                    photosHTML = `<div class="pet-card-photo" style="align-items:center; justify-content:center; font-size: 50px; opacity: 0.3;">📷</div>`;
-                }
+                const firstPhoto = photosArray.length > 0 ? photosArray[0] : '';
+                const photoHTML = firstPhoto 
+                    ? `<img src="${firstPhoto}" alt="Фото">`
+                    : `<div style="width:100%; height:100%; display:flex; align-items:center; justify-content:center; font-size: 50px; opacity: 0.2;">📷</div>`;
+
+                // Іконка для типу тваринки
+                const typeIcon = pet.type === 'Котик' ? '🐱' : (pet.type === 'Песик' ? '🐶' : '🐾');
 
                 card.innerHTML = `
-                    <div style="position: relative;">${photosHTML}</div>
+                    <div class="pet-card-photo">${photoHTML}</div>
                     <div class="pet-card-info">
                         <h3 class="pet-card-name">${pet.name || 'Без імені'}</h3>
+                        
                         <div class="pet-card-details">
-                            <div><strong>📍 Локація:</strong> ${pet.city || 'Не вказано'}</div>
-                            <div><strong>📅 Вік:</strong> ${pet.age || 'Не вказано'}</div>
-                            <div><strong>⚧ Стать:</strong> ${pet.gender || 'Не вказано'}</div>
+                            <div class="detail-item"><span class="detail-icon">${typeIcon}</span> ${pet.type || 'Тваринка'}</div>
+                            <div class="detail-item"><span class="detail-icon">📅</span> ${pet.age || 'Не вказано'}</div>
+                            <div class="detail-item"><span class="detail-icon">📍</span> ${pet.city || 'Не вказано'}</div>
+                            <div class="detail-item"><span class="detail-icon">⚧</span> ${pet.gender || 'Не вказано'}</div>
                         </div>
+
                         <button class="btn-more" onclick="openPetDetails('${pet.id}')">Докладніше</button>
                     </div>
                 `;
@@ -441,9 +507,8 @@
             });
         }
 
-        // 3. ЛОГІКА ФІЛЬТРАЦІЇ
+        // 3. ФІЛЬТРАЦІЯ
         function applyFilters() {
-            // Зчитуємо що натиснуто
             const activeType = document.querySelector('.type-card.active').getAttribute('data-type');
             const activeGender = document.querySelector('#filter-gender .btn-filter.active').getAttribute('data-val');
             const activeAge = document.querySelector('#filter-age .btn-filter.active').getAttribute('data-val');
@@ -451,24 +516,19 @@
             const activeRegion = document.getElementById('filter-region').value;
             const activeVaccine = document.getElementById('filter-vaccine').value;
 
-            // Фільтруємо масив
             const filtered = allPublishedPets.filter(pet => {
                 if (activeType !== 'Усі' && pet.type !== activeType) return false;
                 if (activeGender !== 'Усі' && pet.gender !== activeGender) return false;
                 if (activeSteril !== 'Усі' && pet.sterilization !== activeSteril) return false;
                 if (activeRegion !== 'Усі' && pet.region !== activeRegion) return false;
                 if (activeVaccine !== 'Усі' && pet.vaccination !== activeVaccine) return false;
-                
-                // Вік (оскільки в базі це текст, робимо точний збіг)
                 if (activeAge !== 'Усі' && pet.age !== activeAge) return false;
-
                 return true;
             });
-
             renderPets(filtered);
         }
 
-        // 4. ВІДКРИТТЯ ДЕТАЛЕЙ (МОДАЛКА)
+        // 4. ДЕТАЛЬНЕ ВІКНО (З ГОРТАННЯМ ФОТО І ЛІНІЄЮ)
         function openPetDetails(id) {
             const pet = allPublishedPets.find(p => p.id === id);
             if (!pet) return;
@@ -481,7 +541,6 @@
             document.getElementById('modal-vaccine').innerText = pet.vaccination || '-';
             document.getElementById('modal-desc').innerText = pet.description || 'Опис відсутній.';
 
-            // Фото для модалки
             let photosArray = [];
             try { photosArray = pet.photos ? JSON.parse(pet.photos) : []; } catch (e) {}
             
@@ -499,25 +558,15 @@
             document.getElementById('pet-details-modal').style.display = 'flex';
         }
 
-        function closePetDetails() {
-            document.getElementById('pet-details-modal').style.display = 'none';
-        }
+        function closePetDetails() { document.getElementById('pet-details-modal').style.display = 'none'; }
 
         function sharePet() {
-            // Копіюємо поточне посилання сайту
             navigator.clipboard.writeText(window.location.href).then(() => {
                 alert("✅ Посилання скопійовано! Надішліть його друзям.");
             });
         }
 
-
-        // --- ІНТЕРАКТИВ ФІЛЬТРІВ (Перемикання кнопок) ---
-        adoptBtn.onclick = (e) => {
-            e.preventDefault();
-            filtersSidebar.style.display = filtersSidebar.style.display === 'none' ? 'block' : 'none';
-            // Якщо відкрили меню, показуємо сітку. Якщо ні - можемо приховати, але краще залишити
-        };
-
+        // --- КЛІКИ ДЛЯ ФІЛЬТРІВ ТА АВТОРИЗАЦІЇ ---
         document.querySelectorAll('.btn-filter').forEach(btn => {
             btn.onclick = function() {
                 this.parentElement.querySelectorAll('.btn-filter').forEach(b => b.classList.remove('active'));
@@ -531,7 +580,6 @@
             };
         });
 
-        // --- СТАРА ЛОГІКА АВТОРИЗАЦІЇ (без змін) ---
         if(loginLink) loginLink.onclick = (e) => { e.preventDefault(); modal.style.display = 'flex'; };
         closeModal.onclick = () => { modal.style.display = 'none'; };
         window.onclick = (e) => { 
@@ -616,7 +664,7 @@
             };
         }
 
-        // ЗАПУСКАЄМО ЗАВАНТАЖЕННЯ ТВАРИН ПРИ ВІДКРИТТІ САЙТУ!
+        // ЗАВАНТАЖУЄМО АНКЕТИ У ФОНОВОМУ РЕЖИМІ
         loadPets();
     </script>
 </body>

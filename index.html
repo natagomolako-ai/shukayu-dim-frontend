@@ -13,6 +13,7 @@
             padding: 20px;
             border-radius: 20px;
             border: 2px solid #5d4037;
+            min-width: 280px;
             max-width: 300px;
             box-shadow: 0 4px 15px rgba(0,0,0,0.1);
         }
@@ -55,6 +56,7 @@
             cursor: pointer;
             font-weight: bold;
             transition: 0.3s;
+            box-sizing: border-box;
         }
         .type-card.active { background: #eef5d8; border-width: 2.5px; }
         
@@ -65,6 +67,7 @@
             border: 1px solid #ccc;
             background: white;
             font-family: inherit;
+            box-sizing: border-box;
         }
         .btn-apply-filters {
             width: 100%;
@@ -92,12 +95,7 @@
             transition: transform 0.2s;
             overflow: hidden;
         }
-
-        .user-profile-box:hover {
-            transform: translateY(-2px);
-        }
-
-        /* Кругла аватарка з першою літерою */
+        .user-profile-box:hover { transform: translateY(-2px); }
         .user-avatar {
             width: 32px;
             height: 32px;
@@ -112,16 +110,12 @@
             font-size: 15px;
             box-shadow: inset 0 2px 4px rgba(0,0,0,0.2);
         }
-
-        /* Текст привітання */
         .user-info {
             color: #5d4037;
             font-size: 14px;
             font-weight: 700;
             white-space: nowrap;
         }
-
-        /* Кнопка виходу */
         .logout-btn {
             margin-left: 15px;
             text-decoration: none;
@@ -132,11 +126,107 @@
             padding-left: 12px;
             transition: 0.3s;
         }
+        .logout-btn:hover { color: #b71c1c; text-decoration: underline; }
 
-        .logout-btn:hover {
-            color: #b71c1c;
-            text-decoration: underline;
+        /* --- НОВІ СТИЛІ ДЛЯ ВІТРИНИ ТА КАРТОК --- */
+        .page-layout {
+            max-width: 1200px;
+            margin: 20px auto;
+            padding: 0 20px;
         }
+        .content {
+            display: flex;
+            gap: 30px;
+            align-items: flex-start;
+        }
+        .pets-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 25px;
+            width: 100%;
+        }
+        .pet-card {
+            background: #fff;
+            border-radius: 20px;
+            border: 2px solid #5d4037;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            display: flex;
+            flex-direction: column;
+            transition: transform 0.3s;
+        }
+        .pet-card:hover { transform: translateY(-5px); }
+        .pet-card-photo {
+            width: 100%;
+            height: 200px;
+            background: #f1f1f1;
+            position: relative;
+            display: flex;
+            overflow-x: auto;
+            scroll-snap-type: x mandatory;
+            scrollbar-width: none;
+        }
+        .pet-card-photo img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            flex: 0 0 100%;
+            scroll-snap-align: start;
+        }
+        .pet-card-info { padding: 20px; display: flex; flex-direction: column; flex-grow: 1; }
+        .pet-card-name { font-size: 22px; color: #5d4037; margin: 0 0 15px 0; font-weight: bold; }
+        .pet-card-details { font-size: 14px; color: #555; margin-bottom: 20px; line-height: 1.6; }
+        .pet-card-details strong { color: #333; }
+        .btn-more {
+            margin-top: auto;
+            padding: 12px;
+            background: #a6c24c;
+            color: #fff;
+            text-align: center;
+            border-radius: 12px;
+            font-weight: bold;
+            cursor: pointer;
+            border: none;
+            transition: 0.3s;
+        }
+        .btn-more:hover { background: #8eab3b; }
+
+        /* --- ВЕЛИКЕ ВІКНО ОГОЛОШЕННЯ --- */
+        .pet-modal-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.6); display: none; align-items: center; justify-content: center;
+            z-index: 2000; padding: 20px; box-sizing: border-box;
+        }
+        .pet-modal-content {
+            background: #fff; border-radius: 20px; max-width: 900px; width: 100%;
+            display: flex; overflow: hidden; position: relative; border: 3px solid #5d4037;
+            max-height: 90vh;
+        }
+        @media (max-width: 768px) {
+            .pet-modal-content { flex-direction: column; overflow-y: auto; }
+            .pet-modal-photo-container { height: 300px; }
+        }
+        .pet-modal-photo-container {
+            flex: 1; background: #f8f9fa; position: relative; display: flex;
+            overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none;
+        }
+        .pet-modal-photo-container img { width: 100%; height: 100%; object-fit: cover; flex: 0 0 100%; scroll-snap-align: start; }
+        .pet-modal-info { flex: 1; padding: 30px; display: flex; flex-direction: column; overflow-y: auto; }
+        .pet-modal-close {
+            position: absolute; top: 15px; right: 20px; font-size: 28px; cursor: pointer;
+            color: #5d4037; z-index: 10; font-weight: bold;
+        }
+        .modal-action-btns { display: flex; gap: 15px; margin-top: auto; padding-top: 20px; }
+        .btn-share {
+            flex: 1; padding: 14px; border: 2px solid #5d4037; background: #fff; color: #5d4037;
+            font-weight: bold; border-radius: 12px; cursor: pointer; transition: 0.3s;
+        }
+        .btn-share:hover { background: #f1f1f1; }
+        .btn-adopt {
+            flex: 1; padding: 14px; background: #a6c24c; border: none; color: #fff;
+            font-weight: bold; border-radius: 12px; cursor: pointer; transition: 0.3s;
+        }
+        .btn-adopt:hover { background: #8eab3b; }
     </style>
 </head>
 <body>
@@ -160,43 +250,43 @@
         <main class="content">
             <aside id="filters-sidebar" class="sidebar-filters" style="display: none;">
                 
-                <div class="type-card active"><span>🐾 Усі тварини</span></div>
-                <div class="type-card"><span>🐶 Песики</span></div>
-                <div class="type-card"><span>🐱 Котики</span></div>
+                <div class="type-card active" data-type="Усі"><span>🐾 Усі тварини</span></div>
+                <div class="type-card" data-type="Песик"><span>🐶 Песики</span></div>
+                <div class="type-card" data-type="Котик"><span>🐱 Котики</span></div>
 
                 <div class="filter-section">
                     <div class="filter-title">⚧ Стать</div>
-                    <div class="filter-buttons">
-                        <button class="btn-filter active">Усі</button>
-                        <button class="btn-filter">Хлопчики</button>
-                        <button class="btn-filter">Дівчинки</button>
+                    <div class="filter-buttons" id="filter-gender">
+                        <button class="btn-filter active" data-val="Усі">Усі</button>
+                        <button class="btn-filter" data-val="Хлопчик">Хлопчики</button>
+                        <button class="btn-filter" data-val="Дівчинка">Дівчинки</button>
                     </div>
                 </div>
 
                 <div class="filter-section">
                     <div class="filter-title">📅 Вік</div>
-                    <div class="filter-buttons">
-                        <button class="btn-filter active">Усі</button>
-                        <button class="btn-filter">до 1р.</button>
-                        <button class="btn-filter">1-2 р.</button>
-                        <button class="btn-filter">2-5 р.</button>
-                        <button class="btn-filter">старше 5 р.</button>
+                    <div class="filter-buttons" id="filter-age">
+                        <button class="btn-filter active" data-val="Усі">Усі</button>
+                        <button class="btn-filter" data-val="до 1р.">до 1р.</button>
+                        <button class="btn-filter" data-val="1-2 р.">1-2 р.</button>
+                        <button class="btn-filter" data-val="2-5 р.">2-5 р.</button>
+                        <button class="btn-filter" data-val="старше 5 р.">старше 5 р.</button>
                     </div>
                 </div>
 
                 <div class="filter-section">
                     <div class="filter-title">⚕️ Стерилізація</div>
-                    <div class="filter-buttons">
-                        <button class="btn-filter active">Усі</button>
-                        <button class="btn-filter">Проведено</button>
-                        <button class="btn-filter">Немає</button>
+                    <div class="filter-buttons" id="filter-steril">
+                        <button class="btn-filter active" data-val="Усі">Усі</button>
+                        <button class="btn-filter" data-val="Так">Проведено</button>
+                        <button class="btn-filter" data-val="Ні">Немає</button>
                     </div>
                 </div>
 
                 <div class="filter-section">
                     <div class="filter-title">📍 Область</div>
-                    <select class="filter-select">
-                        <option>Усі області</option>
+                    <select class="filter-select" id="filter-region">
+                        <option value="Усі">Усі області</option>
                         <option>Вінницька</option><option>Волинська</option><option>Дніпропетровська</option>
                         <option>Донецька</option><option>Житомирська</option><option>Закарпатська</option>
                         <option>Запорізька</option><option>Івано-Франківська</option><option>Київська</option>
@@ -210,23 +300,49 @@
 
                 <div class="filter-section">
                     <div class="filter-title">💉 Вакцинація</div>
-                    <select class="filter-select">
-                        <option>Усі</option>
-                        <option>Є щеплення</option>
-                        <option>Немає</option>
+                    <select class="filter-select" id="filter-vaccine">
+                        <option value="Усі">Усі</option>
+                        <option value="Так">Є щеплення</option>
+                        <option value="Ні">Немає</option>
                     </select>
                 </div>
 
-                <button class="btn-apply-filters">Показати тваринок</button>
+                <button class="btn-apply-filters" onclick="applyFilters()">Показати тваринок</button>
             </aside>
-        </main>
 
-        <aside class="sidebar">
-            <div class="contacts">
-                <p>📞 097 390 74 66</p>
-                <p>🕒 08:00 - 21:00</p>
+            <div id="pets-grid" class="pets-grid">
+                <p style="grid-column: 1/-1; text-align: center; color: #5d4037; font-size: 18px; margin-top: 50px;">Завантажуємо пухнастиків... 🐾</p>
             </div>
-        </aside>
+        </main>
+    </div>
+
+    <div id="pet-details-modal" class="pet-modal-overlay">
+        <div class="pet-modal-content">
+            <span class="pet-modal-close" onclick="closePetDetails()">&times;</span>
+            
+            <div id="modal-photo-box" class="pet-modal-photo-container">
+                </div>
+            
+            <div class="pet-modal-info">
+                <h2 id="modal-name" style="color: #5d4037; font-size: 32px; margin-top: 0; margin-bottom: 20px;">Ім'я</h2>
+                
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 25px; font-size: 15px; color: #444;">
+                    <div><strong>📍 Локація:</strong> <span id="modal-location"></span></div>
+                    <div><strong>⚧ Стать:</strong> <span id="modal-gender"></span></div>
+                    <div><strong>📅 Вік:</strong> <span id="modal-age"></span></div>
+                    <div><strong>⚕️ Стерилізація:</strong> <span id="modal-steril"></span></div>
+                    <div style="grid-column: 1/-1;"><strong>💉 Вакцинація:</strong> <span id="modal-vaccine"></span></div>
+                </div>
+                
+                <h3 style="color: #5d4037; margin-bottom: 10px;">Про хвостика</h3>
+                <p id="modal-desc" style="color: #555; line-height: 1.6; margin-bottom: 30px; word-wrap: break-word;"></p>
+                
+                <div class="modal-action-btns">
+                    <button class="btn-share" onclick="sharePet()">↗ Поділитися з друзями</button>
+                    <button class="btn-adopt" onclick="alert('Ця функція скоро запрацює! 🐾')">♥ Взяти додому</button>
+                </div>
+            </div>
+        </div>
     </div>
 
     <div id="auth-modal" class="modal-overlay">
@@ -260,50 +376,148 @@
         const closeModal = document.getElementById('close-modal');
         const adoptBtn = document.getElementById('adopt-btn');
         const filtersSidebar = document.getElementById('filters-sidebar');
-        const createAdBtn = document.getElementById('create-ad-btn'); // Знаходимо нашу кнопку
+        const createAdBtn = document.getElementById('create-ad-btn');
 
-        // Відкриття модалки
-        if(loginLink) loginLink.onclick = (e) => { e.preventDefault(); modal.style.display = 'flex'; };
-        closeModal.onclick = () => { modal.style.display = 'none'; };
-        window.onclick = (e) => { if (e.target === modal) modal.style.display = 'none'; };
+        // --- ГЛОБАЛЬНА БАЗА ОПУБЛІКОВАНИХ ТВАРИН ---
+        let allPublishedPets = [];
 
-        // ЛОГІКА КНОПКИ "СТВОРИТИ ОГОЛОШЕННЯ"
-        if(createAdBtn) {
-            createAdBtn.onclick = (e) => {
-                e.preventDefault();
-                const savedName = localStorage.getItem('userName');
-                
-                if (savedName) {
-                    // Якщо користувач увійшов -> переходимо на сторінку створення
-                    window.location.href = 'add-pet.html';
-                } else {
-                    // Якщо НЕ увійшов -> показуємо модалку реєстрації/входу
-                    modal.style.display = 'flex';
-                }
-            };
+        // 1. ЗАВАНТАЖУЄМО ТВАРИН ІЗ БАЗИ
+        async function loadPets() {
+            try {
+                const res = await fetch(`${API_URL}/api/pets`);
+                const pets = await res.json();
+                // Беремо ТІЛЬКИ ті, які ти схвалила (published)
+                allPublishedPets = pets.filter(p => p.status === 'published');
+                renderPets(allPublishedPets);
+            } catch (err) {
+                document.getElementById('pets-grid').innerHTML = '<p style="text-align:center; color:red;">Помилка зв\'язку з сервером.</p>';
+            }
         }
 
-        // Таби
-        document.getElementById('tab-register').onclick = () => {
-            document.getElementById('tab-login').classList.remove('active');
-            document.getElementById('tab-register').classList.add('active');
-            document.getElementById('form-login').classList.remove('active-form');
-            document.getElementById('form-register').classList.add('active-form');
-        };
-        document.getElementById('tab-login').onclick = () => {
-            document.getElementById('tab-register').classList.remove('active');
-            document.getElementById('tab-login').classList.add('active');
-            document.getElementById('form-register').classList.remove('active-form');
-            document.getElementById('form-login').classList.add('active-form');
-        };
+        // 2. ВІДМАЛЬОВУЄМО КАРТКИ НА ВІТРИНІ
+        function renderPets(petsArray) {
+            const grid = document.getElementById('pets-grid');
+            grid.innerHTML = '';
 
-        // Кнопка фільтрів
+            if (petsArray.length === 0) {
+                grid.innerHTML = '<p style="grid-column: 1/-1; text-align: center; color: #5d4037; font-size: 18px;">За вашим запитом хвостиків не знайдено 😔</p>';
+                return;
+            }
+
+            petsArray.forEach(pet => {
+                const card = document.createElement('div');
+                card.className = 'pet-card';
+
+                // Фотографії
+                let photosArray = [];
+                try { photosArray = pet.photos ? JSON.parse(pet.photos) : []; } catch (e) {}
+                
+                let photosHTML = '';
+                if (photosArray.length > 0) {
+                    photosHTML = `
+                        ${photosArray.length > 1 ? `<button onclick="this.nextElementSibling.scrollBy({left: -280, behavior: 'smooth'})" style="position: absolute; left: 5px; top: 50%; transform: translateY(-50%); background: rgba(0,0,0,0.5); color: white; border: none; border-radius: 50%; width: 30px; height: 30px; cursor: pointer; z-index: 10;">&lt;</button>` : ''}
+                        <div class="pet-card-photo">
+                            ${photosArray.map(url => `<img src="${url}" alt="Фото">`).join('')}
+                        </div>
+                        ${photosArray.length > 1 ? `<button onclick="this.previousElementSibling.scrollBy({left: 280, behavior: 'smooth'})" style="position: absolute; right: 5px; top: 50%; transform: translateY(-50%); background: rgba(0,0,0,0.5); color: white; border: none; border-radius: 50%; width: 30px; height: 30px; cursor: pointer; z-index: 10;">&gt;</button>` : ''}
+                    `;
+                } else {
+                    photosHTML = `<div class="pet-card-photo" style="align-items:center; justify-content:center; font-size: 50px; opacity: 0.3;">📷</div>`;
+                }
+
+                card.innerHTML = `
+                    <div style="position: relative;">${photosHTML}</div>
+                    <div class="pet-card-info">
+                        <h3 class="pet-card-name">${pet.name || 'Без імені'}</h3>
+                        <div class="pet-card-details">
+                            <div><strong>📍 Локація:</strong> ${pet.city || 'Не вказано'}</div>
+                            <div><strong>📅 Вік:</strong> ${pet.age || 'Не вказано'}</div>
+                            <div><strong>⚧ Стать:</strong> ${pet.gender || 'Не вказано'}</div>
+                        </div>
+                        <button class="btn-more" onclick="openPetDetails('${pet.id}')">Докладніше</button>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+        }
+
+        // 3. ЛОГІКА ФІЛЬТРАЦІЇ
+        function applyFilters() {
+            // Зчитуємо що натиснуто
+            const activeType = document.querySelector('.type-card.active').getAttribute('data-type');
+            const activeGender = document.querySelector('#filter-gender .btn-filter.active').getAttribute('data-val');
+            const activeAge = document.querySelector('#filter-age .btn-filter.active').getAttribute('data-val');
+            const activeSteril = document.querySelector('#filter-steril .btn-filter.active').getAttribute('data-val');
+            const activeRegion = document.getElementById('filter-region').value;
+            const activeVaccine = document.getElementById('filter-vaccine').value;
+
+            // Фільтруємо масив
+            const filtered = allPublishedPets.filter(pet => {
+                if (activeType !== 'Усі' && pet.type !== activeType) return false;
+                if (activeGender !== 'Усі' && pet.gender !== activeGender) return false;
+                if (activeSteril !== 'Усі' && pet.sterilization !== activeSteril) return false;
+                if (activeRegion !== 'Усі' && pet.region !== activeRegion) return false;
+                if (activeVaccine !== 'Усі' && pet.vaccination !== activeVaccine) return false;
+                
+                // Вік (оскільки в базі це текст, робимо точний збіг)
+                if (activeAge !== 'Усі' && pet.age !== activeAge) return false;
+
+                return true;
+            });
+
+            renderPets(filtered);
+        }
+
+        // 4. ВІДКРИТТЯ ДЕТАЛЕЙ (МОДАЛКА)
+        function openPetDetails(id) {
+            const pet = allPublishedPets.find(p => p.id === id);
+            if (!pet) return;
+
+            document.getElementById('modal-name').innerText = pet.name || 'Без імені';
+            document.getElementById('modal-location').innerText = `${pet.region || ''}, ${pet.city || ''}`;
+            document.getElementById('modal-gender').innerText = pet.gender || '-';
+            document.getElementById('modal-age').innerText = pet.age || '-';
+            document.getElementById('modal-steril').innerText = pet.sterilization || '-';
+            document.getElementById('modal-vaccine').innerText = pet.vaccination || '-';
+            document.getElementById('modal-desc').innerText = pet.description || 'Опис відсутній.';
+
+            // Фото для модалки
+            let photosArray = [];
+            try { photosArray = pet.photos ? JSON.parse(pet.photos) : []; } catch (e) {}
+            
+            const photoBox = document.getElementById('modal-photo-box');
+            if (photosArray.length > 0) {
+                photoBox.innerHTML = `
+                    ${photosArray.length > 1 ? `<button onclick="this.nextElementSibling.scrollBy({left: -400, behavior: 'smooth'})" style="position: absolute; left: 10px; top: 50%; transform: translateY(-50%); background: rgba(0,0,0,0.6); color: white; border: none; border-radius: 50%; width: 40px; height: 40px; font-size: 20px; cursor: pointer; z-index: 10;">&lt;</button>` : ''}
+                    ${photosArray.map(url => `<img src="${url}" alt="Фото">`).join('')}
+                    ${photosArray.length > 1 ? `<button onclick="this.previousElementSibling.scrollBy({left: 400, behavior: 'smooth'})" style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); background: rgba(0,0,0,0.6); color: white; border: none; border-radius: 50%; width: 40px; height: 40px; font-size: 20px; cursor: pointer; z-index: 10;">&gt;</button>` : ''}
+                `;
+            } else {
+                photoBox.innerHTML = `<div style="width:100%; height:100%; display:flex; align-items:center; justify-content:center; font-size: 80px; opacity: 0.2;">📷</div>`;
+            }
+
+            document.getElementById('pet-details-modal').style.display = 'flex';
+        }
+
+        function closePetDetails() {
+            document.getElementById('pet-details-modal').style.display = 'none';
+        }
+
+        function sharePet() {
+            // Копіюємо поточне посилання сайту
+            navigator.clipboard.writeText(window.location.href).then(() => {
+                alert("✅ Посилання скопійовано! Надішліть його друзям.");
+            });
+        }
+
+
+        // --- ІНТЕРАКТИВ ФІЛЬТРІВ (Перемикання кнопок) ---
         adoptBtn.onclick = (e) => {
             e.preventDefault();
             filtersSidebar.style.display = filtersSidebar.style.display === 'none' ? 'block' : 'none';
+            // Якщо відкрили меню, показуємо сітку. Якщо ні - можемо приховати, але краще залишити
         };
 
-        // Логіка перемикання кнопок-фільтрів
         document.querySelectorAll('.btn-filter').forEach(btn => {
             btn.onclick = function() {
                 this.parentElement.querySelectorAll('.btn-filter').forEach(b => b.classList.remove('active'));
@@ -317,7 +531,35 @@
             };
         });
 
-        // ВХІД
+        // --- СТАРА ЛОГІКА АВТОРИЗАЦІЇ (без змін) ---
+        if(loginLink) loginLink.onclick = (e) => { e.preventDefault(); modal.style.display = 'flex'; };
+        closeModal.onclick = () => { modal.style.display = 'none'; };
+        window.onclick = (e) => { 
+            if (e.target === modal) modal.style.display = 'none'; 
+            if (e.target === document.getElementById('pet-details-modal')) closePetDetails();
+        };
+
+        if(createAdBtn) {
+            createAdBtn.onclick = (e) => {
+                e.preventDefault();
+                if (localStorage.getItem('userName')) window.location.href = 'add-pet.html';
+                else modal.style.display = 'flex';
+            };
+        }
+
+        document.getElementById('tab-register').onclick = () => {
+            document.getElementById('tab-login').classList.remove('active');
+            document.getElementById('tab-register').classList.add('active');
+            document.getElementById('form-login').classList.remove('active-form');
+            document.getElementById('form-register').classList.add('active-form');
+        };
+        document.getElementById('tab-login').onclick = () => {
+            document.getElementById('tab-register').classList.remove('active');
+            document.getElementById('tab-login').classList.add('active');
+            document.getElementById('form-register').classList.remove('active-form');
+            document.getElementById('form-login').classList.add('active-form');
+        };
+
         document.getElementById('form-login').onsubmit = async (e) => {
             e.preventDefault();
             const email = document.getElementById('login-email').value;
@@ -332,13 +574,12 @@
                 if (res.ok) {
                     alert('Привіт, ' + data.user.name + '!');
                     localStorage.setItem('userName', data.user.name);
-                    localStorage.setItem('user', JSON.stringify(data.user)); // ВАЖЛИВО: Зберігаємо весь об'єкт користувача з його ID!
+                    localStorage.setItem('user', JSON.stringify(data.user));
                     location.reload();
                 } else alert(data.error);
             } catch (err) { alert('Сервер вимкнено!'); }
         };
 
-        // РЕЄСТРАЦІЯ
         document.getElementById('form-register').onsubmit = async (e) => {
             e.preventDefault();
             const name = document.getElementById('register-name').value;
@@ -358,7 +599,6 @@
             } catch (err) { alert('Сервер вимкнено!'); }
         };
 
-        // --- КРАСИВЕ, КОМПАКТНЕ ВІДОБРАЖЕННЯ ПРОФІЛЮ ---
         const savedName = localStorage.getItem('userName');
         if (savedName) {
             const firstLetter = savedName.charAt(0).toUpperCase();
@@ -376,24 +616,8 @@
             };
         }
 
-        // Ця функція знадобиться тобі вже на сторінці add-pet.html!
-        async function submitAd(event) {
-            event.preventDefault();
-            const user = JSON.parse(localStorage.getItem('user'));
-            
-            const adData = {
-                name: document.getElementById('petName').value,
-                type: document.getElementById('petType').value,
-                authorId: user.id, 
-                status: 'pending'  
-            };
-
-            const response = await fetch(`${API_URL}/pets`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(adData)
-            });
-        }
+        // ЗАПУСКАЄМО ЗАВАНТАЖЕННЯ ТВАРИН ПРИ ВІДКРИТТІ САЙТУ!
+        loadPets();
     </script>
 </body>
 </html>

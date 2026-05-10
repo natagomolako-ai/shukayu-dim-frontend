@@ -7,271 +7,160 @@
     <link rel="stylesheet" href="./css/style.css">
 
     <style>
-        /* Додаткові стилі для крутих, компактних фільтрів */
+        /* --- ОФОРМЛЕННЯ КНОПКИ "УВІЙТИ" ТА ПРИБИРАННЯ ЛІНІЙ --- */
+        .header .login, .header .main-menu {
+            border: none !important; /* Примусово прибираємо всі роздільні лінії в меню */
+        }
+        
+        #login-link {
+            background: #a6c24c;
+            color: white !important;
+            padding: 10px 24px;
+            border-radius: 25px;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 15px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 10px rgba(166, 194, 76, 0.3);
+            display: inline-block;
+        }
+        
+        #login-link:hover {
+            background: #8eab3b;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(166, 194, 76, 0.4);
+        }
+
+        /* --- САЙДБАР З ФІЛЬТРАМИ (Зсунуто максимально вліво) --- */
         .sidebar-filters {
             background: #fff;
             padding: 20px;
             border-radius: 20px;
             border: 2px solid #5d4037;
-            min-width: 280px;
-            max-width: 300px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            width: 280px; 
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            flex-shrink: 0;
+            margin-top: 0;
         }
         .filter-section { margin-bottom: 20px; }
-        .filter-title { 
-            font-weight: bold; 
-            color: #5d4037; 
-            margin-bottom: 12px; 
-            display: flex; 
-            align-items: center; 
-            gap: 8px;
-            font-size: 16px;
-        }
+        .filter-title { font-weight: bold; color: #5d4037; margin-bottom: 12px; display: flex; align-items: center; gap: 8px; font-size: 16px; }
         .filter-buttons { display: flex; flex-wrap: wrap; gap: 8px; }
-        .btn-filter {
-            padding: 8px 16px;
-            border-radius: 20px;
-            border: 1px solid #ddd;
-            background: #f8f9fa;
-            cursor: pointer;
-            font-size: 14px;
-            transition: all 0.3s ease;
-        }
+        .btn-filter { padding: 8px 16px; border-radius: 20px; border: 1px solid #ddd; background: #f8f9fa; cursor: pointer; font-size: 14px; transition: all 0.3s ease; }
         .btn-filter:hover { background: #e9ecef; }
-        .btn-filter.active {
-            background: #a6c24c; 
-            color: white;
-            border-color: #a6c24c;
-            font-weight: bold;
-        }
-        .type-card {
-            width: 100%;
-            display: flex;
-            align-items: center;
-            padding: 12px;
-            margin-bottom: 10px;
-            border-radius: 12px;
-            border: 1.5px solid #a6c24c;
-            background: white;
-            cursor: pointer;
-            font-weight: bold;
-            transition: 0.3s;
-            box-sizing: border-box;
-        }
+        .btn-filter.active { background: #a6c24c; color: white; border-color: #a6c24c; font-weight: bold; }
+        .type-card { width: 100%; display: flex; align-items: center; padding: 12px; margin-bottom: 10px; border-radius: 12px; border: 1.5px solid #a6c24c; background: white; cursor: pointer; font-weight: bold; transition: 0.3s; box-sizing: border-box; }
         .type-card.active { background: #eef5d8; border-width: 2.5px; }
-        
-        select.filter-select {
-            width: 100%;
-            padding: 10px;
-            border-radius: 10px;
-            border: 1px solid #ccc;
-            background: white;
-            font-family: inherit;
-            box-sizing: border-box;
-        }
-        .btn-apply-filters {
-            width: 100%;
-            padding: 14px;
-            background: #5d4037;
-            color: white;
-            border: none;
-            border-radius: 12px;
-            font-weight: bold;
-            font-size: 16px;
-            cursor: pointer;
-            margin-top: 10px;
-            transition: 0.3s;
-        }
+        select.filter-select { width: 100%; padding: 10px; border-radius: 10px; border: 1px solid #ccc; background: white; font-family: inherit; box-sizing: border-box; }
+        .btn-apply-filters { width: 100%; padding: 14px; background: #5d4037; color: white; border: none; border-radius: 12px; font-weight: bold; font-size: 16px; cursor: pointer; margin-top: 10px; transition: 0.3s; }
         .btn-apply-filters:hover { background: #4e342e; }
 
-        /* Стильна, компактна капсула профілю */
-        .user-profile-box {
-            display: flex;
-            align-items: center;
-            background: #efebe9;
-            padding: 6px 18px;
-            border-radius: 40px;
-            border: 2px solid #5d4037;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.08);
-            transition: transform 0.2s;
-            overflow: hidden;
-        }
+        /* Профіль (коли увійшли) */
+        .user-profile-box { display: flex; align-items: center; background: #efebe9; padding: 6px 18px; border-radius: 40px; border: 2px solid #5d4037; box-shadow: 0 4px 10px rgba(0,0,0,0.08); transition: transform 0.2s; overflow: hidden; }
         .user-profile-box:hover { transform: translateY(-2px); }
-        .user-avatar {
-            width: 32px;
-            height: 32px;
-            background: #5d4037;
-            color: #fff;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-right: 12px;
-            font-weight: bold;
-            font-size: 15px;
-            box-shadow: inset 0 2px 4px rgba(0,0,0,0.2);
-        }
-        .user-info {
-            color: #5d4037;
-            font-size: 14px;
-            font-weight: 700;
-            white-space: nowrap;
-        }
-        .logout-btn {
-            margin-left: 15px;
-            text-decoration: none;
-            color: #d32f2f;
-            font-size: 12px;
-            font-weight: bold;
-            border-left: 1.5px solid #d7ccc8;
-            padding-left: 12px;
-            transition: 0.3s;
-        }
+        .user-avatar { width: 32px; height: 32px; background: #5d4037; color: #fff; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-right: 12px; font-weight: bold; font-size: 15px; box-shadow: inset 0 2px 4px rgba(0,0,0,0.2); }
+        .user-info { color: #5d4037; font-size: 14px; font-weight: 700; white-space: nowrap; }
+        .logout-btn { margin-left: 15px; text-decoration: none; color: #d32f2f; font-size: 12px; font-weight: bold; transition: 0.3s; }
         .logout-btn:hover { color: #b71c1c; text-decoration: underline; }
 
-        /* --- НОВІ СТИЛІ ДЛЯ ВІТРИНИ ТА КАРТОК --- */
-        .page-layout {
-            max-width: 1200px;
-            margin: 20px auto;
-            padding: 0 20px;
+        /* --- ВІТРИНА ТА КАРТКИ --- */
+        .page-layout { max-width: 1500px; margin: 20px auto; padding: 0 30px; }
+        
+        .content { 
+            display: flex; 
+            gap: 30px; 
+            align-items: flex-start; 
+            width: 100%; 
+            justify-content: flex-start; 
         }
-        .content {
-            display: flex;
-            gap: 30px;
-            align-items: flex-start;
-            width: 100%;
+        
+        /* РІВНО 3 КАРТКИ В РЯД */
+        .pets-grid { 
+            display: grid; 
+            grid-template-columns: repeat(3, 1fr); 
+            gap: 25px; 
+            width: 100%; 
+            align-content: start; 
+            margin-top: 0;
         }
-        .pets-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-            gap: 25px;
-            width: 100%;
-        }
-        .pet-card {
-            background: #fff;
-            border-radius: 20px;
-            border: 2px solid #eee;
-            overflow: hidden;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
-            display: flex;
-            flex-direction: column;
-            transition: transform 0.3s, box-shadow 0.3s;
+        
+        @media (max-width: 1100px) { .pets-grid { grid-template-columns: repeat(2, 1fr); } }
+        @media (max-width: 768px) { .pets-grid { grid-template-columns: 1fr; } .content { flex-direction: column; } .sidebar-filters { width: 100%; } }
+
+        /* БІЛА КАРТКА З ОДНИМ ФОТО */
+        .pet-card { 
+            background: #fff; 
+            border-radius: 20px; 
+            border: 2px solid #e0e0e0; 
+            overflow: hidden; 
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05); 
+            display: flex; 
+            flex-direction: column; 
+            transition: transform 0.3s, box-shadow 0.3s; 
+            margin-top: 0;
         }
         .pet-card:hover { transform: translateY(-5px); box-shadow: 0 8px 25px rgba(0,0,0,0.1); border-color: #d7ccc8; }
         
-        /* ТІЛЬКИ ОДНЕ ФОТО НА КАРТЦІ */
-        .pet-card-photo {
-            width: 100%;
-            height: 220px;
-            background: #f1f1f1;
-            position: relative;
-            overflow: hidden;
-        }
-        .pet-card-photo img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
+        .pet-card-photo { width: 100%; height: 230px; background: #f8f9fa; position: relative; overflow: hidden; }
+        .pet-card-photo img { width: 100%; height: 100%; object-fit: cover; }
         .pet-card-info { padding: 20px; display: flex; flex-direction: column; flex-grow: 1; }
-        .pet-card-name { font-size: 22px; color: #1c2b36; margin: 0 0 15px 0; font-weight: 800; }
+        .pet-card-name { font-size: 22px; color: #1c2b36; margin: 0 0 15px 0; font-weight: 800; text-align: left;}
         
-        /* 4 ПУНКТИ В 2 РЯДКИ (як на твоєму дизайні) */
-        .pet-card-details { 
-            display: grid; 
-            grid-template-columns: 1fr 1fr; 
-            gap: 12px; 
-            margin-bottom: 20px; 
-            font-size: 14px; 
-            color: #666; 
-        }
-        .pet-card-details .detail-item {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-        .pet-card-details .detail-icon {
-            color: #a6c24c; /* Колір іконок під твій дизайн */
-            font-size: 16px;
-        }
+        .pet-card-details { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 20px; font-size: 14px; color: #555; }
+        .pet-card-details .detail-item { display: flex; align-items: center; gap: 8px; }
+        .pet-card-details .detail-icon { color: #a6c24c; font-size: 16px; }
 
-        .btn-more {
-            margin-top: auto;
-            padding: 12px;
-            background: #fff;
-            color: #5d4037;
-            text-align: center;
-            border-radius: 12px;
-            font-weight: bold;
-            cursor: pointer;
-            border: 2px solid #5d4037;
-            transition: 0.3s;
-        }
+        .btn-more { margin-top: auto; padding: 12px; background: #fff; color: #5d4037; text-align: center; border-radius: 12px; font-weight: bold; cursor: pointer; border: 2px solid #5d4037; transition: 0.3s; }
         .btn-more:hover { background: #5d4037; color: #fff; }
 
         /* --- ВЕЛИКЕ ВІКНО ОГОЛОШЕННЯ --- */
-        .pet-modal-overlay {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.6); display: none; align-items: center; justify-content: center;
-            z-index: 2000; padding: 20px; box-sizing: border-box;
-        }
-        .pet-modal-content {
-            background: #fff; border-radius: 20px; max-width: 900px; width: 100%;
-            display: flex; overflow: hidden; position: relative; border: 3px solid #5d4037;
-            max-height: 90vh;
-        }
-        @media (max-width: 768px) {
-            .pet-modal-content { flex-direction: column; overflow-y: auto; }
-            .pet-modal-photo-container { height: 300px; }
-        }
-        /* В модалці фото можна гортати */
-        .pet-modal-photo-container {
-            flex: 1; background: #f8f9fa; position: relative; display: flex;
-            overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none;
-        }
-        .pet-modal-photo-container img { width: 100%; height: 100%; object-fit: cover; flex: 0 0 100%; scroll-snap-align: start; }
-        .pet-modal-info { flex: 1; padding: 30px; display: flex; flex-direction: column; overflow-y: auto; }
-        .pet-modal-close {
-            position: absolute; top: 15px; right: 20px; font-size: 28px; cursor: pointer;
-            color: #5d4037; z-index: 10; font-weight: bold;
-        }
+        .pet-modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); display: none; align-items: center; justify-content: center; z-index: 2000; padding: 20px; box-sizing: border-box; }
+        .pet-modal-content { background: #fff; border-radius: 20px; max-width: 950px; width: 100%; padding: 30px; display: flex; flex-direction: column; position: relative; border: 3px solid #5d4037; max-height: 95vh; overflow-y: auto; box-sizing: border-box;}
+        .pet-modal-close { position: absolute; top: 15px; right: 20px; font-size: 32px; cursor: pointer; color: #5d4037; z-index: 10; font-weight: bold; line-height: 1; transition: 0.2s;}
+        .pet-modal-close:hover { color: #d32f2f; }
 
-        /* КРАСИВИЙ ЗАГОЛОВОК З ЛІНІЄЮ */
-        .modal-header-centered {
-            text-align: center;
-            border-bottom: 2px solid #e0e0e0;
-            padding-bottom: 15px;
-            margin-bottom: 20px;
+        /* РОЗДІЛЕННЯ НА 2 ЧАСТИНИ В МОДАЛЦІ */
+        .modal-body-split { display: flex; gap: 35px; }
+        @media (max-width: 768px) { .modal-body-split { flex-direction: column; } }
+
+        /* Ліва частина: Галерея фото */
+        .modal-gallery { flex: 1; min-width: 0; display: flex; flex-direction: column; }
+        .modal-main-photo { width: 100%; height: 350px; border-radius: 15px; object-fit: cover; background: #f1f1f1; margin-bottom: 15px; border: 1px solid #ddd;}
+        .modal-thumbnails { display: flex; gap: 10px; overflow-x: auto; padding-bottom: 10px; scrollbar-width: thin;}
+        .modal-thumbnails img { 
+            width: 80px; height: 80px; object-fit: cover; border-radius: 10px; 
+            cursor: pointer; border: 3px solid transparent; opacity: 0.6; transition: 0.3s; 
         }
-        .modal-header-centered h2 {
+        .modal-thumbnails img.active, .modal-thumbnails img:hover { opacity: 1; border-color: #5d4037; }
+
+        /* Права частина: Текст і кнопки */
+        .modal-info-side { flex: 1; display: flex; flex-direction: column; position: relative; }
+        
+        /* ЗАГОЛОВОК СПРАВА НАД ТЕКСТОМ */
+        .modal-header-right { text-align: center; margin-bottom: 20px; width: 100%; }
+        .modal-header-right h2 { 
             color: #5d4037; 
-            font-size: 32px; 
-            margin: 0;
+            font-size: 34px; 
+            margin: 0; 
+            padding-bottom: 15px;
+            border-bottom: 4px solid #795548; 
+            font-weight: 800;
         }
 
-        .modal-action-btns { display: flex; gap: 15px; margin-top: auto; padding-top: 20px; }
-        .btn-share {
-            flex: 1; padding: 14px; border: 2px solid #5d4037; background: #fff; color: #5d4037;
-            font-weight: bold; border-radius: 12px; cursor: pointer; transition: 0.3s;
-        }
+        .modal-details-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 25px; font-size: 15px; color: #444; background: #fcf8f5; padding: 20px; border-radius: 15px;}
+        .modal-details-grid div { display: flex; align-items: center; gap: 8px;}
+        .modal-details-grid strong { color: #5d4037; }
+
+        .modal-desc-text { color: #555; line-height: 1.6; margin-bottom: 30px; word-wrap: break-word; font-size: 15px;}
+        
+        .modal-action-btns { display: flex; gap: 15px; margin-top: auto; }
+        .btn-share { flex: 1; padding: 14px; border: 2px solid #5d4037; background: #fff; color: #5d4037; font-weight: bold; border-radius: 12px; cursor: pointer; transition: 0.3s; font-size: 15px;}
         .btn-share:hover { background: #f1f1f1; }
-        .btn-adopt {
-            flex: 1; padding: 14px; background: #ea5b5b; border: none; color: #fff;
-            font-weight: bold; border-radius: 12px; cursor: pointer; transition: 0.3s;
-        }
+        .btn-adopt { flex: 1; padding: 14px; background: #ea5b5b; border: none; color: #fff; font-weight: bold; border-radius: 12px; cursor: pointer; transition: 0.3s; font-size: 15px;}
         .btn-adopt:hover { background: #d34a4a; }
 
         /* РОЗДІЛИ САЙТУ */
-        #adopt-view { display: none; } /* Сховано за замовчуванням */
-        #home-view { 
-            width: 100%; 
-            min-height: 50vh; 
-            display: flex; 
-            flex-direction: column; 
-            align-items: center; 
-            justify-content: center; 
-            text-align: center; 
-            color: #5d4037;
-        }
+        #adopt-view { display: none; }
+        #home-view { width: 100%; min-height: 50vh; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; color: #5d4037; }
     </style>
 </head>
 <body>
@@ -295,8 +184,8 @@
         
         <div id="home-view">
             <h1>Ласкаво просимо на портал "Шукаю дім" 🐾</h1>
-            <p style="font-size: 18px; color: #666; max-width: 600px; line-height: 1.6;">
-                пізніше
+            <p style="font-size: 18px; color: #666; max-width: 600px; margin: 20px auto; line-height: 1.6;">
+                Тут незабаром з'являться корисні статті, новини нашої ініціативи та поради щодо догляду за тваринками. 
                 <br><br>
                 Щоб переглянути пухнастиків, які шукають родину, натисніть <b>«Хочу забрати в родину»</b> в меню зверху!
             </p>
@@ -349,6 +238,7 @@
                         <option>Рівненська</option><option>Сумська</option><option>Тернопільська</option>
                         <option>Харківська</option><option>Херсонська</option><option>Хмельницька</option>
                         <option>Черкаська</option><option>Чернівецька</option><option>Чернігівська</option>
+                        <option>АР Крим</option><option>Київ</option><option>Севастополь</option>
                     </select>
                 </div>
 
@@ -365,7 +255,7 @@
             </aside>
 
             <div id="pets-grid" class="pets-grid">
-                <p style="grid-column: 1/-1; text-align: center; color: #5d4037; font-size: 18px; margin-top: 50px;">Завантажуємо пухнастиків... 🐾</p>
+                <p style="grid-column: 1/-1; text-align: center; color: #5d4037; font-size: 18px;">Завантажуємо пухнастиків... 🐾</p>
             </div>
         </main>
     </div>
@@ -374,29 +264,36 @@
         <div class="pet-modal-content">
             <span class="pet-modal-close" onclick="closePetDetails()">&times;</span>
             
-            <div id="modal-photo-box" class="pet-modal-photo-container">
-                </div>
-            
-            <div class="pet-modal-info">
-                <div class="modal-header-centered">
-                    <h2 id="modal-name">Ім'я</h2>
-                </div>
+            <div class="modal-body-split">
                 
-                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 25px; font-size: 15px; color: #444;">
-                    <div><strong>📍 Локація:</strong> <span id="modal-location"></span></div>
-                    <div><strong>⚧ Стать:</strong> <span id="modal-gender"></span></div>
-                    <div><strong>📅 Вік:</strong> <span id="modal-age"></span></div>
-                    <div><strong>⚕️ Стерилізація:</strong> <span id="modal-steril"></span></div>
-                    <div style="grid-column: 1/-1;"><strong>💉 Вакцинація:</strong> <span id="modal-vaccine"></span></div>
+                <div class="modal-gallery">
+                    <img id="modal-main-photo" class="modal-main-photo" src="" alt="Фото тваринки">
+                    <div id="modal-thumbnails" class="modal-thumbnails">
+                        </div>
                 </div>
-                
-                <h3 style="color: #5d4037; margin-bottom: 10px;">Про хвостика</h3>
-                <p id="modal-desc" style="color: #555; line-height: 1.6; margin-bottom: 30px; word-wrap: break-word;"></p>
-                
-                <div class="modal-action-btns">
-                    <button class="btn-share" onclick="sharePet()">↗ Поділитися</button>
-                    <button class="btn-adopt" onclick="alert('Ця функція скоро запрацює! 🐾')">⌂ Взяти додому</button>
+
+                <div class="modal-info-side">
+                    <div class="modal-header-right">
+                        <h2 id="modal-name">Ім'я</h2>
+                    </div>
+
+                    <div class="modal-details-grid">
+                        <div><strong>📍 Локація:</strong> <span id="modal-location"></span></div>
+                        <div><strong>⚧ Стать:</strong> <span id="modal-gender"></span></div>
+                        <div><strong>📅 Вік:</strong> <span id="modal-age"></span></div>
+                        <div><strong>⚕️ Стерилізація:</strong> <span id="modal-steril"></span></div>
+                        <div style="grid-column: 1/-1;"><strong>💉 Вакцинація:</strong> <span id="modal-vaccine"></span></div>
+                    </div>
+                    
+                    <h3 style="color: #5d4037; margin-top: 0; margin-bottom: 10px;">Про хвостика</h3>
+                    <p id="modal-desc" class="modal-desc-text"></p>
+                    
+                    <div class="modal-action-btns">
+                        <button class="btn-share" onclick="sharePet()">↗ Поділитися</button>
+                        <button class="btn-adopt" onclick="alert('Ця функція скоро запрацює! 🐾')">⌂ Взяти додому</button>
+                    </div>
                 </div>
+
             </div>
         </div>
     </div>
@@ -434,10 +331,9 @@
         const logoLink = document.getElementById('logo-link');
         const createAdBtn = document.getElementById('create-ad-btn');
 
-        // Глобальні змінні
         let allPublishedPets = [];
 
-        // --- ПЕРЕМИКАННЯ ВИГЛЯДУ (Головна <-> Каталог) ---
+        // --- ПЕРЕМИКАННЯ ВИГЛЯДУ ---
         adoptBtn.onclick = (e) => {
             e.preventDefault();
             document.getElementById('home-view').style.display = 'none';
@@ -450,7 +346,7 @@
             document.getElementById('home-view').style.display = 'flex';
         }
 
-        // 1. ЗАВАНТАЖЕННЯ З БАЗИ
+        // --- ЗАВАНТАЖЕННЯ З БАЗИ ---
         async function loadPets() {
             try {
                 const res = await fetch(`${API_URL}/api/pets`);
@@ -462,7 +358,7 @@
             }
         }
 
-        // 2. ВІДМАЛЬОВУВАННЯ КАРТОК (ТІЛЬКИ ОДНЕ ФОТО, СІТКА 2х2)
+        // --- ВІДМАЛЬОВУВАННЯ КАРТОК ВІТРИНИ ---
         function renderPets(petsArray) {
             const grid = document.getElementById('pets-grid');
             grid.innerHTML = '';
@@ -476,30 +372,26 @@
                 const card = document.createElement('div');
                 card.className = 'pet-card';
 
-                // Беремо тільки ПЕРШЕ фото
+                // БЕРЕМО ТІЛЬКИ 1 ФОТО ДЛЯ ВІТРИНИ
                 let photosArray = [];
                 try { photosArray = pet.photos ? JSON.parse(pet.photos) : []; } catch (e) {}
-                
                 const firstPhoto = photosArray.length > 0 ? photosArray[0] : '';
                 const photoHTML = firstPhoto 
                     ? `<img src="${firstPhoto}" alt="Фото">`
                     : `<div style="width:100%; height:100%; display:flex; align-items:center; justify-content:center; font-size: 50px; opacity: 0.2;">📷</div>`;
 
-                // Іконка для типу тваринки
                 const typeIcon = pet.type === 'Котик' ? '🐱' : (pet.type === 'Песик' ? '🐶' : '🐾');
 
                 card.innerHTML = `
                     <div class="pet-card-photo">${photoHTML}</div>
                     <div class="pet-card-info">
                         <h3 class="pet-card-name">${pet.name || 'Без імені'}</h3>
-                        
                         <div class="pet-card-details">
                             <div class="detail-item"><span class="detail-icon">${typeIcon}</span> ${pet.type || 'Тваринка'}</div>
                             <div class="detail-item"><span class="detail-icon">📅</span> ${pet.age || 'Не вказано'}</div>
                             <div class="detail-item"><span class="detail-icon">📍</span> ${pet.city || 'Не вказано'}</div>
                             <div class="detail-item"><span class="detail-icon">⚧</span> ${pet.gender || 'Не вказано'}</div>
                         </div>
-
                         <button class="btn-more" onclick="openPetDetails('${pet.id}')">Докладніше</button>
                     </div>
                 `;
@@ -507,7 +399,7 @@
             });
         }
 
-        // 3. ФІЛЬТРАЦІЯ
+        // --- ФІЛЬТРАЦІЯ ---
         function applyFilters() {
             const activeType = document.querySelector('.type-card.active').getAttribute('data-type');
             const activeGender = document.querySelector('#filter-gender .btn-filter.active').getAttribute('data-val');
@@ -528,7 +420,14 @@
             renderPets(filtered);
         }
 
-        // 4. ДЕТАЛЬНЕ ВІКНО (З ГОРТАННЯМ ФОТО І ЛІНІЄЮ)
+        // --- ЛОГІКА ДЛЯ ЗМІНИ ФОТО В МОДАЛЦІ ---
+        window.changeMainPhoto = function(url, el) {
+            document.getElementById('modal-main-photo').src = url;
+            document.querySelectorAll('#modal-thumbnails img').forEach(img => img.classList.remove('active'));
+            el.classList.add('active');
+        };
+
+        // --- ВІДКРИТТЯ МОДАЛКИ З ДЕТАЛЯМИ ---
         function openPetDetails(id) {
             const pet = allPublishedPets.find(p => p.id === id);
             if (!pet) return;
@@ -544,15 +443,25 @@
             let photosArray = [];
             try { photosArray = pet.photos ? JSON.parse(pet.photos) : []; } catch (e) {}
             
-            const photoBox = document.getElementById('modal-photo-box');
+            const mainPhotoEl = document.getElementById('modal-main-photo');
+            const thumbContainer = document.getElementById('modal-thumbnails');
+
             if (photosArray.length > 0) {
-                photoBox.innerHTML = `
-                    ${photosArray.length > 1 ? `<button onclick="this.nextElementSibling.scrollBy({left: -400, behavior: 'smooth'})" style="position: absolute; left: 10px; top: 50%; transform: translateY(-50%); background: rgba(0,0,0,0.6); color: white; border: none; border-radius: 50%; width: 40px; height: 40px; font-size: 20px; cursor: pointer; z-index: 10;">&lt;</button>` : ''}
-                    ${photosArray.map(url => `<img src="${url}" alt="Фото">`).join('')}
-                    ${photosArray.length > 1 ? `<button onclick="this.previousElementSibling.scrollBy({left: 400, behavior: 'smooth'})" style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); background: rgba(0,0,0,0.6); color: white; border: none; border-radius: 50%; width: 40px; height: 40px; font-size: 20px; cursor: pointer; z-index: 10;">&gt;</button>` : ''}
-                `;
+                // Ставимо перше фото як головне
+                mainPhotoEl.src = photosArray[0];
+                mainPhotoEl.style.display = 'block';
+                
+                // Якщо фоток більше однієї, генеруємо мініатюри
+                if(photosArray.length > 1) {
+                    thumbContainer.innerHTML = photosArray.map((url, idx) => `
+                        <img src="${url}" class="${idx === 0 ? 'active' : ''}" onclick="changeMainPhoto('${url}', this)" alt="Мініатюра">
+                    `).join('');
+                } else {
+                    thumbContainer.innerHTML = ''; // Якщо фото одне, мініатюри не потрібні
+                }
             } else {
-                photoBox.innerHTML = `<div style="width:100%; height:100%; display:flex; align-items:center; justify-content:center; font-size: 80px; opacity: 0.2;">📷</div>`;
+                mainPhotoEl.style.display = 'none'; // Ховаємо картинку, якщо фото взагалі немає
+                thumbContainer.innerHTML = `<div style="width:100%; height:200px; display:flex; align-items:center; justify-content:center; font-size: 60px; opacity: 0.2; background:#f1f1f1; border-radius:15px;">📷</div>`;
             }
 
             document.getElementById('pet-details-modal').style.display = 'flex';
@@ -566,7 +475,7 @@
             });
         }
 
-        // --- КЛІКИ ДЛЯ ФІЛЬТРІВ ТА АВТОРИЗАЦІЇ ---
+        // --- КЛІКИ ДЛЯ ФІЛЬТРІВ ---
         document.querySelectorAll('.btn-filter').forEach(btn => {
             btn.onclick = function() {
                 this.parentElement.querySelectorAll('.btn-filter').forEach(b => b.classList.remove('active'));
@@ -580,6 +489,7 @@
             };
         });
 
+        // --- АВТОРИЗАЦІЯ ---
         if(loginLink) loginLink.onclick = (e) => { e.preventDefault(); modal.style.display = 'flex'; };
         closeModal.onclick = () => { modal.style.display = 'none'; };
         window.onclick = (e) => { 
@@ -664,7 +574,6 @@
             };
         }
 
-        // ЗАВАНТАЖУЄМО АНКЕТИ У ФОНОВОМУ РЕЖИМІ
         loadPets();
     </script>
 </body>

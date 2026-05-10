@@ -8,39 +8,20 @@
 
     <style>
         /* --- ОФОРМЛЕННЯ КНОПКИ "УВІЙТИ" ТА ПРИБИРАННЯ ЛІНІЙ --- */
-        .header .login, .header .main-menu {
-            border: none !important; /* Примусово прибираємо всі роздільні лінії в меню */
-        }
+        .header .login, .header .main-menu { border: none !important; }
         
         #login-link {
-            background: #a6c24c;
-            color: white !important;
-            padding: 10px 24px;
-            border-radius: 25px;
-            text-decoration: none;
-            font-weight: bold;
-            font-size: 15px;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 10px rgba(166, 194, 76, 0.3);
+            background: #a6c24c; color: white !important; padding: 10px 24px;
+            border-radius: 25px; text-decoration: none; font-weight: bold;
+            font-size: 15px; transition: all 0.3s ease; box-shadow: 0 4px 10px rgba(166, 194, 76, 0.3);
             display: inline-block;
         }
-        
-        #login-link:hover {
-            background: #8eab3b;
-            transform: translateY(-2px);
-            box-shadow: 0 6px 15px rgba(166, 194, 76, 0.4);
-        }
+        #login-link:hover { background: #8eab3b; transform: translateY(-2px); box-shadow: 0 6px 15px rgba(166, 194, 76, 0.4); }
 
-        /* --- САЙДБАР З ФІЛЬТРАМИ (Зсунуто максимально вліво) --- */
+        /* --- САЙДБАР З ФІЛЬТРАМИ --- */
         .sidebar-filters {
-            background: #fff;
-            padding: 20px;
-            border-radius: 20px;
-            border: 2px solid #5d4037;
-            width: 280px; 
-            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
-            flex-shrink: 0;
-            margin-top: 0;
+            background: #fff; padding: 20px; border-radius: 20px; border: 2px solid #5d4037;
+            width: 280px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); flex-shrink: 0; margin-top: 0;
         }
         .filter-section { margin-bottom: 20px; }
         .filter-title { font-weight: bold; color: #5d4037; margin-bottom: 12px; display: flex; align-items: center; gap: 8px; font-size: 16px; }
@@ -65,39 +46,13 @@
         /* --- ВІТРИНА ТА КАРТКИ --- */
         .page-layout { max-width: 1500px; margin: 20px auto; padding: 0 30px; }
         
-        .content { 
-            display: flex; 
-            gap: 30px; 
-            align-items: flex-start; 
-            width: 100%; 
-            justify-content: flex-start; 
-        }
+        .content { display: flex; gap: 30px; align-items: flex-start; width: 100%; justify-content: flex-start; }
         
-        /* РІВНО 3 КАРТКИ В РЯД */
-        .pets-grid { 
-            display: grid; 
-            grid-template-columns: repeat(3, 1fr); 
-            gap: 25px; 
-            width: 100%; 
-            align-content: start; 
-            margin-top: 0;
-        }
-        
+        .pets-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 25px; width: 100%; align-content: start; margin-top: 0; }
         @media (max-width: 1100px) { .pets-grid { grid-template-columns: repeat(2, 1fr); } }
         @media (max-width: 768px) { .pets-grid { grid-template-columns: 1fr; } .content { flex-direction: column; } .sidebar-filters { width: 100%; } }
 
-        /* БІЛА КАРТКА З ОДНИМ ФОТО */
-        .pet-card { 
-            background: #fff; 
-            border-radius: 20px; 
-            border: 2px solid #e0e0e0; 
-            overflow: hidden; 
-            box-shadow: 0 4px 15px rgba(0,0,0,0.05); 
-            display: flex; 
-            flex-direction: column; 
-            transition: transform 0.3s, box-shadow 0.3s; 
-            margin-top: 0;
-        }
+        .pet-card { background: #fff; border-radius: 20px; border: 2px solid #e0e0e0; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.05); display: flex; flex-direction: column; transition: transform 0.3s, box-shadow 0.3s; margin-top: 0;}
         .pet-card:hover { transform: translateY(-5px); box-shadow: 0 8px 25px rgba(0,0,0,0.1); border-color: #d7ccc8; }
         
         .pet-card-photo { width: 100%; height: 230px; background: #f8f9fa; position: relative; overflow: hidden; }
@@ -118,47 +73,30 @@
         .pet-modal-close { position: absolute; top: 15px; right: 20px; font-size: 32px; cursor: pointer; color: #5d4037; z-index: 10; font-weight: bold; line-height: 1; transition: 0.2s;}
         .pet-modal-close:hover { color: #d32f2f; }
 
-        /* РОЗДІЛЕННЯ НА 2 ЧАСТИНИ В МОДАЛЦІ */
         .modal-body-split { display: flex; gap: 35px; }
         @media (max-width: 768px) { .modal-body-split { flex-direction: column; } }
 
-        /* Ліва частина: Галерея фото */
         .modal-gallery { flex: 1; min-width: 0; display: flex; flex-direction: column; }
         .modal-main-photo { width: 100%; height: 350px; border-radius: 15px; object-fit: cover; background: #f1f1f1; margin-bottom: 15px; border: 1px solid #ddd;}
         .modal-thumbnails { display: flex; gap: 10px; overflow-x: auto; padding-bottom: 10px; scrollbar-width: thin;}
-        .modal-thumbnails img { 
-            width: 80px; height: 80px; object-fit: cover; border-radius: 10px; 
-            cursor: pointer; border: 3px solid transparent; opacity: 0.6; transition: 0.3s; 
-        }
+        .modal-thumbnails img { width: 80px; height: 80px; object-fit: cover; border-radius: 10px; cursor: pointer; border: 3px solid transparent; opacity: 0.6; transition: 0.3s; }
         .modal-thumbnails img.active, .modal-thumbnails img:hover { opacity: 1; border-color: #5d4037; }
 
-        /* Права частина: Текст і кнопки */
         .modal-info-side { flex: 1; display: flex; flex-direction: column; position: relative; }
-        
-        /* ЗАГОЛОВОК СПРАВА НАД ТЕКСТОМ */
         .modal-header-right { text-align: center; margin-bottom: 20px; width: 100%; }
-        .modal-header-right h2 { 
-            color: #5d4037; 
-            font-size: 34px; 
-            margin: 0; 
-            padding-bottom: 15px;
-            border-bottom: 4px solid #795548; 
-            font-weight: 800;
-        }
+        .modal-header-right h2 { color: #5d4037; font-size: 34px; margin: 0; padding-bottom: 15px; border-bottom: 4px solid #795548; font-weight: 800; }
 
         .modal-details-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 25px; font-size: 15px; color: #444; background: #fcf8f5; padding: 20px; border-radius: 15px;}
         .modal-details-grid div { display: flex; align-items: center; gap: 8px;}
         .modal-details-grid strong { color: #5d4037; }
 
         .modal-desc-text { color: #555; line-height: 1.6; margin-bottom: 30px; word-wrap: break-word; font-size: 15px;}
-        
         .modal-action-btns { display: flex; gap: 15px; margin-top: auto; }
         .btn-share { flex: 1; padding: 14px; border: 2px solid #5d4037; background: #fff; color: #5d4037; font-weight: bold; border-radius: 12px; cursor: pointer; transition: 0.3s; font-size: 15px;}
         .btn-share:hover { background: #f1f1f1; }
         .btn-adopt { flex: 1; padding: 14px; background: #ea5b5b; border: none; color: #fff; font-weight: bold; border-radius: 12px; cursor: pointer; transition: 0.3s; font-size: 15px;}
         .btn-adopt:hover { background: #d34a4a; }
 
-        /* РОЗДІЛИ САЙТУ */
         #adopt-view { display: none; }
         #home-view { width: 100%; min-height: 50vh; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; color: #5d4037; }
     </style>
@@ -172,7 +110,7 @@
         <nav class="main-menu">
             <a href="#" id="adopt-btn">Хочу забрати в родину</a>
             <a href="#">Хочу допомогти</a>
-            <a href="#">Загублені, знайдені тваринки</a>
+            <a href="#" id="lost-btn">Загублені, знайдені тваринки</a>
             <a href="#" id="create-ad-btn">Створити оголошення</a>
         </nav>
         <div class="login">
@@ -206,7 +144,7 @@
                     </div>
                 </div>
 
-                <div class="filter-section">
+                <div class="filter-section" id="filter-age-sec">
                     <div class="filter-title">📅 Вік</div>
                     <div class="filter-buttons" id="filter-age">
                         <button class="btn-filter active" data-val="Усі">Усі</button>
@@ -217,13 +155,22 @@
                     </div>
                 </div>
 
-                <div class="filter-section">
+                <div class="filter-section" id="filter-steril-sec">
                     <div class="filter-title">⚕️ Стерилізація</div>
                     <div class="filter-buttons" id="filter-steril">
                         <button class="btn-filter active" data-val="Усі">Усі</button>
                         <button class="btn-filter" data-val="Так">Проведено</button>
                         <button class="btn-filter" data-val="Ні">Немає</button>
                     </div>
+                </div>
+
+                <div class="filter-section" id="filter-vaccine-sec">
+                    <div class="filter-title">💉 Вакцинація</div>
+                    <select class="filter-select" id="filter-vaccine">
+                        <option value="Усі">Усі</option>
+                        <option value="Так">Є щеплення</option>
+                        <option value="Ні">Немає</option>
+                    </select>
                 </div>
 
                 <div class="filter-section">
@@ -238,24 +185,19 @@
                         <option>Рівненська</option><option>Сумська</option><option>Тернопільська</option>
                         <option>Харківська</option><option>Херсонська</option><option>Хмельницька</option>
                         <option>Черкаська</option><option>Чернівецька</option><option>Чернігівська</option>
-                        <option>АР Крим</option><option>Київ</option><option>Севастополь</option>
-                    </select>
-                </div>
-
-                <div class="filter-section">
-                    <div class="filter-title">💉 Вакцинація</div>
-                    <select class="filter-select" id="filter-vaccine">
-                        <option value="Усі">Усі</option>
-                        <option value="Так">Є щеплення</option>
-                        <option value="Ні">Немає</option>
+                        <option>АР Крим</option><option>м. Київ</option><option>м. Севастополь</option>
                     </select>
                 </div>
 
                 <button class="btn-apply-filters" onclick="applyFilters()">Показати тваринок</button>
             </aside>
 
-            <div id="pets-grid" class="pets-grid">
-                <p style="grid-column: 1/-1; text-align: center; color: #5d4037; font-size: 18px;">Завантажуємо пухнастиків... 🐾</p>
+            <div style="flex-grow: 1; display: flex; flex-direction: column; width: 100%;">
+                <h2 id="catalog-title" style="text-align: center; color: #6B1C1C; margin-top: 0; margin-bottom: 25px; font-size: 32px; font-weight: 800; border-bottom: 2px solid #e0e0e0; padding-bottom: 10px;">Шукають дім 🏡</h2>
+                
+                <div id="pets-grid" class="pets-grid">
+                    <p style="grid-column: 1/-1; text-align: center; color: #5d4037; font-size: 18px;">Завантажуємо пухнастиків... 🐾</p>
+                </div>
             </div>
         </main>
     </div>
@@ -265,11 +207,9 @@
             <span class="pet-modal-close" onclick="closePetDetails()">&times;</span>
             
             <div class="modal-body-split">
-                
                 <div class="modal-gallery">
                     <img id="modal-main-photo" class="modal-main-photo" src="" alt="Фото тваринки">
-                    <div id="modal-thumbnails" class="modal-thumbnails">
-                        </div>
+                    <div id="modal-thumbnails" class="modal-thumbnails"></div>
                 </div>
 
                 <div class="modal-info-side">
@@ -280,9 +220,9 @@
                     <div class="modal-details-grid">
                         <div><strong>📍 Локація:</strong> <span id="modal-location"></span></div>
                         <div><strong>⚧ Стать:</strong> <span id="modal-gender"></span></div>
-                        <div><strong>📅 Вік:</strong> <span id="modal-age"></span></div>
-                        <div><strong>⚕️ Стерилізація:</strong> <span id="modal-steril"></span></div>
-                        <div style="grid-column: 1/-1;"><strong>💉 Вакцинація:</strong> <span id="modal-vaccine"></span></div>
+                        <div id="modal-age-box"><strong>📅 Вік:</strong> <span id="modal-age"></span></div>
+                        <div id="modal-steril-box"><strong>⚕️ Стерил.:</strong> <span id="modal-steril"></span></div>
+                        <div id="modal-vaccine-box" style="grid-column: 1/-1;"><strong>💉 Вакцин.:</strong> <span id="modal-vaccine"></span></div>
                     </div>
                     
                     <h3 style="color: #5d4037; margin-top: 0; margin-bottom: 10px;">Про хвостика</h3>
@@ -290,10 +230,9 @@
                     
                     <div class="modal-action-btns">
                         <button class="btn-share" onclick="sharePet()">↗ Поділитися</button>
-                        <button class="btn-adopt" onclick="alert('Ця функція скоро запрацює! 🐾')">⌂ Взяти додому</button>
+                        <button class="btn-adopt" id="modal-main-btn" onclick="alert('Ця функція скоро запрацює! 🐾')">⌂ Взяти додому</button>
                     </div>
                 </div>
-
             </div>
         </div>
     </div>
@@ -328,16 +267,59 @@
         const loginLink = document.getElementById('login-link');
         const closeModal = document.getElementById('close-modal');
         const adoptBtn = document.getElementById('adopt-btn');
+        const lostBtn = document.getElementById('lost-btn');
         const logoLink = document.getElementById('logo-link');
         const createAdBtn = document.getElementById('create-ad-btn');
+        const catalogTitle = document.getElementById('catalog-title');
 
-        let allPublishedPets = [];
+        let allAdoptionPets = [];
+        let allLostPets = [];
+        let currentMode = 'adoption';
 
-        // --- ПЕРЕМИКАННЯ ВИГЛЯДУ ---
+        function resetFilters() {
+            document.querySelectorAll('.type-card').forEach(c => c.classList.remove('active'));
+            document.querySelector('.type-card[data-type="Усі"]').classList.add('active');
+            
+            document.querySelectorAll('.btn-filter').forEach(b => b.classList.remove('active'));
+            document.querySelectorAll('.filter-buttons').forEach(group => {
+                const allBtn = group.querySelector('.btn-filter[data-val="Усі"]');
+                if (allBtn) allBtn.classList.add('active');
+            });
+
+            const regionFilter = document.getElementById('filter-region');
+            if (regionFilter) regionFilter.value = 'Усі';
+            const vaccineFilter = document.getElementById('filter-vaccine');
+            if (vaccineFilter) vaccineFilter.value = 'Усі';
+        }
+
         adoptBtn.onclick = (e) => {
             e.preventDefault();
             document.getElementById('home-view').style.display = 'none';
             document.getElementById('adopt-view').style.display = 'flex';
+            currentMode = 'adoption';
+            catalogTitle.innerText = 'Шукають дім 🏡';
+            
+            document.getElementById('filter-age-sec').style.display = 'block';
+            document.getElementById('filter-steril-sec').style.display = 'block';
+            document.getElementById('filter-vaccine-sec').style.display = 'block';
+            
+            resetFilters();
+            renderPets(allAdoptionPets);
+        };
+
+        lostBtn.onclick = (e) => {
+            e.preventDefault();
+            document.getElementById('home-view').style.display = 'none';
+            document.getElementById('adopt-view').style.display = 'flex';
+            currentMode = 'lost';
+            catalogTitle.innerText = 'Загублені та знайдені 🔍';
+            
+            document.getElementById('filter-age-sec').style.display = 'none';
+            document.getElementById('filter-steril-sec').style.display = 'none';
+            document.getElementById('filter-vaccine-sec').style.display = 'none';
+            
+            resetFilters();
+            renderPets(allLostPets);
         };
 
         logoLink.onclick = (e) => {
@@ -346,19 +328,21 @@
             document.getElementById('home-view').style.display = 'flex';
         }
 
-        // --- ЗАВАНТАЖЕННЯ З БАЗИ ---
         async function loadPets() {
             try {
                 const res = await fetch(`${API_URL}/api/pets`);
                 const pets = await res.json();
-                allPublishedPets = pets.filter(p => p.status === 'published');
-                renderPets(allPublishedPets);
+                
+                const publishedPets = pets.filter(p => p.status === 'published');
+                
+                allAdoptionPets = publishedPets.filter(p => !p.category || p.category === 'adoption');
+                allLostPets = publishedPets.filter(p => p.category === 'lost');
+                
             } catch (err) {
                 document.getElementById('pets-grid').innerHTML = '<p style="text-align:center; color:red;">Помилка зв\'язку з сервером.</p>';
             }
         }
 
-        // --- ВІДМАЛЬОВУВАННЯ КАРТОК ВІТРИНИ ---
         function renderPets(petsArray) {
             const grid = document.getElementById('pets-grid');
             grid.innerHTML = '';
@@ -372,7 +356,6 @@
                 const card = document.createElement('div');
                 card.className = 'pet-card';
 
-                // БЕРЕМО ТІЛЬКИ 1 ФОТО ДЛЯ ВІТРИНИ
                 let photosArray = [];
                 try { photosArray = pet.photos ? JSON.parse(pet.photos) : []; } catch (e) {}
                 const firstPhoto = photosArray.length > 0 ? photosArray[0] : '';
@@ -381,6 +364,8 @@
                     : `<div style="width:100%; height:100%; display:flex; align-items:center; justify-content:center; font-size: 50px; opacity: 0.2;">📷</div>`;
 
                 const typeIcon = pet.type === 'Котик' ? '🐱' : (pet.type === 'Песик' ? '🐶' : '🐾');
+                
+                const ageHtml = currentMode === 'adoption' ? `<div class="detail-item"><span class="detail-icon">📅</span> ${pet.age || 'Не вказано'}</div>` : '';
 
                 card.innerHTML = `
                     <div class="pet-card-photo">${photoHTML}</div>
@@ -388,7 +373,7 @@
                         <h3 class="pet-card-name">${pet.name || 'Без імені'}</h3>
                         <div class="pet-card-details">
                             <div class="detail-item"><span class="detail-icon">${typeIcon}</span> ${pet.type || 'Тваринка'}</div>
-                            <div class="detail-item"><span class="detail-icon">📅</span> ${pet.age || 'Не вказано'}</div>
+                            ${ageHtml}
                             <div class="detail-item"><span class="detail-icon">📍</span> ${pet.city || 'Не вказано'}</div>
                             <div class="detail-item"><span class="detail-icon">⚧</span> ${pet.gender || 'Не вказано'}</div>
                         </div>
@@ -399,46 +384,61 @@
             });
         }
 
-        // --- ФІЛЬТРАЦІЯ ---
         function applyFilters() {
             const activeType = document.querySelector('.type-card.active').getAttribute('data-type');
             const activeGender = document.querySelector('#filter-gender .btn-filter.active').getAttribute('data-val');
-            const activeAge = document.querySelector('#filter-age .btn-filter.active').getAttribute('data-val');
-            const activeSteril = document.querySelector('#filter-steril .btn-filter.active').getAttribute('data-val');
             const activeRegion = document.getElementById('filter-region').value;
-            const activeVaccine = document.getElementById('filter-vaccine').value;
+            
+            const baseArray = currentMode === 'adoption' ? allAdoptionPets : allLostPets;
 
-            const filtered = allPublishedPets.filter(pet => {
+            const filtered = baseArray.filter(pet => {
                 if (activeType !== 'Усі' && pet.type !== activeType) return false;
                 if (activeGender !== 'Усі' && pet.gender !== activeGender) return false;
-                if (activeSteril !== 'Усі' && pet.sterilization !== activeSteril) return false;
                 if (activeRegion !== 'Усі' && pet.region !== activeRegion) return false;
-                if (activeVaccine !== 'Усі' && pet.vaccination !== activeVaccine) return false;
-                if (activeAge !== 'Усі' && pet.age !== activeAge) return false;
+                
+                if (currentMode === 'adoption') {
+                    const activeAge = document.querySelector('#filter-age .btn-filter.active').getAttribute('data-val');
+                    const activeSteril = document.querySelector('#filter-steril .btn-filter.active').getAttribute('data-val');
+                    const activeVaccine = document.getElementById('filter-vaccine').value;
+
+                    if (activeSteril !== 'Усі' && pet.sterilization !== activeSteril) return false;
+                    if (activeVaccine !== 'Усі' && pet.vaccination !== activeVaccine) return false;
+                    if (activeAge !== 'Усі' && pet.age !== activeAge) return false;
+                }
                 return true;
             });
             renderPets(filtered);
         }
 
-        // --- ЛОГІКА ДЛЯ ЗМІНИ ФОТО В МОДАЛЦІ ---
         window.changeMainPhoto = function(url, el) {
             document.getElementById('modal-main-photo').src = url;
             document.querySelectorAll('#modal-thumbnails img').forEach(img => img.classList.remove('active'));
             el.classList.add('active');
         };
 
-        // --- ВІДКРИТТЯ МОДАЛКИ З ДЕТАЛЯМИ ---
         function openPetDetails(id) {
-            const pet = allPublishedPets.find(p => p.id === id);
+            const pet = allAdoptionPets.find(p => p.id === id) || allLostPets.find(p => p.id === id);
             if (!pet) return;
 
             document.getElementById('modal-name').innerText = pet.name || 'Без імені';
             document.getElementById('modal-location').innerText = `${pet.region || ''}, ${pet.city || ''}`;
             document.getElementById('modal-gender').innerText = pet.gender || '-';
-            document.getElementById('modal-age').innerText = pet.age || '-';
-            document.getElementById('modal-steril').innerText = pet.sterilization || '-';
-            document.getElementById('modal-vaccine').innerText = pet.vaccination || '-';
             document.getElementById('modal-desc').innerText = pet.description || 'Опис відсутній.';
+
+            if (currentMode === 'lost') {
+                document.getElementById('modal-age-box').style.display = 'none';
+                document.getElementById('modal-steril-box').style.display = 'none';
+                document.getElementById('modal-vaccine-box').style.display = 'none';
+                document.getElementById('modal-main-btn').innerHTML = '📞 Зв\'язатися з автором';
+            } else {
+                document.getElementById('modal-age-box').style.display = 'flex';
+                document.getElementById('modal-steril-box').style.display = 'flex';
+                document.getElementById('modal-vaccine-box').style.display = 'flex';
+                document.getElementById('modal-age').innerText = pet.age || '-';
+                document.getElementById('modal-steril').innerText = pet.sterilization || '-';
+                document.getElementById('modal-vaccine').innerText = pet.vaccination || '-';
+                document.getElementById('modal-main-btn').innerHTML = '⌂ Взяти додому';
+            }
 
             let photosArray = [];
             try { photosArray = pet.photos ? JSON.parse(pet.photos) : []; } catch (e) {}
@@ -447,20 +447,18 @@
             const thumbContainer = document.getElementById('modal-thumbnails');
 
             if (photosArray.length > 0) {
-                // Ставимо перше фото як головне
                 mainPhotoEl.src = photosArray[0];
                 mainPhotoEl.style.display = 'block';
                 
-                // Якщо фоток більше однієї, генеруємо мініатюри
                 if(photosArray.length > 1) {
                     thumbContainer.innerHTML = photosArray.map((url, idx) => `
                         <img src="${url}" class="${idx === 0 ? 'active' : ''}" onclick="changeMainPhoto('${url}', this)" alt="Мініатюра">
                     `).join('');
                 } else {
-                    thumbContainer.innerHTML = ''; // Якщо фото одне, мініатюри не потрібні
+                    thumbContainer.innerHTML = ''; 
                 }
             } else {
-                mainPhotoEl.style.display = 'none'; // Ховаємо картинку, якщо фото взагалі немає
+                mainPhotoEl.style.display = 'none'; 
                 thumbContainer.innerHTML = `<div style="width:100%; height:200px; display:flex; align-items:center; justify-content:center; font-size: 60px; opacity: 0.2; background:#f1f1f1; border-radius:15px;">📷</div>`;
             }
 
@@ -475,7 +473,6 @@
             });
         }
 
-        // --- КЛІКИ ДЛЯ ФІЛЬТРІВ ---
         document.querySelectorAll('.btn-filter').forEach(btn => {
             btn.onclick = function() {
                 this.parentElement.querySelectorAll('.btn-filter').forEach(b => b.classList.remove('active'));
@@ -489,7 +486,6 @@
             };
         });
 
-        // --- АВТОРИЗАЦІЯ ---
         if(loginLink) loginLink.onclick = (e) => { e.preventDefault(); modal.style.display = 'flex'; };
         closeModal.onclick = () => { modal.style.display = 'none'; };
         window.onclick = (e) => { 
